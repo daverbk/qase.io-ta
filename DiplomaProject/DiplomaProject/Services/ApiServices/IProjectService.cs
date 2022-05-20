@@ -9,5 +9,7 @@ public interface IProjectService
 
     Task<Response<Project>> GetProjectByCode(string projectCode);
 
+    Task<Response<GroupSelection<Project>>> GetAllProjects();
+
     Task<Response<Project>> DeleteProjectByCode(string projectCode);
 }

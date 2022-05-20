@@ -31,6 +31,13 @@ public class ProjectService : IProjectService, IDisposable
         return _restClient.ExecuteAsync<Response<Project>>(request);
     }
 
+    public Task<Response<GroupSelection<Project>>> GetAllProjects()
+    {
+        var request = new RestRequest("/v1/project");
+
+        return _restClient.ExecuteAsync<Response<GroupSelection<Project>>>(request);
+    }
+
     public Task<Response<Project>> DeleteProjectByCode(string projectCode)
     {
         var request = new RestRequest("/v1/project/{code}", Method.Delete)
