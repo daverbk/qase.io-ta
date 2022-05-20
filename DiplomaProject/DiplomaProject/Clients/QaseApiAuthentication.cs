@@ -4,17 +4,21 @@ using RestSharp.Authenticators;
 
 namespace DiplomaProject.Clients;
 
-public class QaseApiAuthentication : AuthenticatorBase
+public class QaseApiAuthentication : IAuthenticator
 {
     private readonly string _token;
-    
-    public QaseApiAuthentication(string token) : base("")
+
+    private string Token => _token;
+
+    public QaseApiAuthentication(string token)
     {
         _token = token;
     }
 
-    protected async override ValueTask<Parameter> GetAuthenticationParameter(string accessToken)
+    public ValueTask Authenticate(RestClient client, RestRequest request)
     {
-        return new HeaderParameter("Token", _token);
+        request.AddHeader("Token", Token);
+
+        return ValueTask.CompletedTask;
     }
 }
