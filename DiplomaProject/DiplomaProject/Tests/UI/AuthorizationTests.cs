@@ -54,6 +54,21 @@ public class AuthorizationTests
 
         _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
     }
+    
+    [Test]
+    [Category("Security")]
+    [TestCase("' or \"")]
+    [TestCase("UNION ALL SELECT USER()--")]
+    [TestCase("admin' or 1=1")]
+    public void SqlInjections(string sqlInjections)
+    {
+        _welcomingPage
+            .ProceedToLoggingIn()
+            .PopulateAuthorizationData(Configurator.Admin.Email, sqlInjections)
+            .SubmitAuthorizationForm();
+
+        _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+    }
 
     [TearDown]
     public void QuiteBrowser()
