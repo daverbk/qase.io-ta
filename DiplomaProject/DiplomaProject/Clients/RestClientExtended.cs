@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using DiplomaProject.Configuration;
+using DiplomaProject.Configuration.Enums;
 using NLog;
 using RestSharp;
 
@@ -15,14 +16,23 @@ public class RestClientExtended
 
     public static RestResponse LastCallResponse { get; private set; } = null!;
 
-    public RestClientExtended()
+    public RestClientExtended(UserType userType)
     {
         var options = new RestClientOptions(Configurator.AppSettings.BaseUrl ??
                                             throw new InvalidOperationException(
                                                 "Base url can't be null. Check appsettings.json before the next restart."));
-
+        
         _client = new RestClient(options);
-        _client.Authenticator = new QaseApiAuthentication(Configurator.Admin.Token);
+
+        const string invalidToken = "11111111";
+        
+        _client.Authenticator = userType switch
+        {
+            UserType.Admin => new QaseApiAuthentication(Configurator.Admin.Token),
+            UserType.WithInvalidAuthenticationData => new QaseApiAuthentication(invalidToken),
+            UserType.Unauthorized => null,
+            _ => throw new ArgumentException("Provided user type is invalid.")
+        };
     }
 
     public async Task<T> ExecuteAsync<T>(RestRequest request)

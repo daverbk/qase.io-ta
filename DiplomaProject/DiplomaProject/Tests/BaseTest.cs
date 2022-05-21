@@ -1,5 +1,6 @@
 using Bogus;
 using DiplomaProject.Clients;
+using DiplomaProject.Configuration.Enums;
 using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using DiplomaProject.Services.ApiServices;
@@ -24,10 +25,10 @@ public class BaseTest
     [OneTimeSetUp]
     public void SetUpApi()
     {
-        var client = new RestClientExtended();
+        var adminClient = new RestClientExtended(UserType.Admin);
 
-        ProjectService = new ProjectService(client);
-        CaseService = new CaseService(client);
-        DefectService = new DefectService(client);
+        ProjectService = new ProjectService(adminClient);
+        CaseService = new CaseService(adminClient);
+        DefectService = new DefectService(adminClient);
     }
 }
