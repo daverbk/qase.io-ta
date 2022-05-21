@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace DiplomaProject.Tests;
 
-[Category("CRUD")]
+[Category("CRUD-API")]
 [Description("This test suite should be run as a whole, don't run the tests one by one.")]
 public class DefectsCrudTest : BaseTest
 {

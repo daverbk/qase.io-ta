@@ -6,9 +6,9 @@ using NUnit.Framework;
 
 namespace DiplomaProject.Tests;
 
-[Category("CRUD")]
+[Category("CRUD-API")]
 [Description("This test suite should be run as a whole, don't run the tests one by one.")]
-public class TestCasesCrudTest : BaseTest
+public class TestCasesCrudTests : BaseTest
 {
     private readonly Project _projectToAdd = FakeProject.Generate();
     private readonly TestCase _testCaseToAdd = FakeTestCase.Generate();
