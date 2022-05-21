@@ -85,7 +85,8 @@ namespace DiplomaProject.Configuration
 
             _appSettings = new AppSettings
             {
-                BaseUrl = appSettingsSection["BaseUrl"],
+                BaseUiUrl = appSettingsSection["BaseUiUrl"],
+                BaseApiUrl = appSettingsSection["BaseApiUrl"],
                 BrowserType = appSettingsSection["BrowserType"],
                 SeleniumWaitTimeout = int.Parse(appSettingsSection["SeleniumWaitTimeout"])
             };

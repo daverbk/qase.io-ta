@@ -18,7 +18,7 @@ public class RestClientExtended
 
     public RestClientExtended(UserType userType)
     {
-        var options = new RestClientOptions(Configurator.AppSettings.BaseUrl ??
+        var options = new RestClientOptions(Configurator.AppSettings.BaseApiUrl ??
                                             throw new InvalidOperationException(
                                                 "Base url can't be null. Check appsettings.json before the next restart."));
         
