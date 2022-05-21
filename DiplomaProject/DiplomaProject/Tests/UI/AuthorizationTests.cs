@@ -13,6 +13,7 @@ public class AuthorizationTests
 {
     private IWebDriver _webDriver = null!;
     private WelcomingPage _welcomingPage = null!;
+    private AuthorizationPage _authorizationPage = null!;
     private ProjectsPage _projectsPage = null!;
 
     [SetUp]
@@ -23,6 +24,7 @@ public class AuthorizationTests
 
         _webDriver = DriverFactory.Driver;
         _welcomingPage = new WelcomingPage(_webDriver);
+        _authorizationPage = new AuthorizationPage(_webDriver);
         _projectsPage = new ProjectsPage(_webDriver);
     }
 
@@ -36,6 +38,21 @@ public class AuthorizationTests
             .SubmitAuthorizationForm();
 
         _projectsPage.PageOpened.Should().BeTrue();
+    }
+
+    [Test]
+    [Category("Negative")]
+    public void NegativeLogIn()
+    {
+        const string invalidEmail = "1111@sma.b";
+        const string invalidPassword = "11111";
+
+        _welcomingPage
+            .ProceedToLoggingIn()
+            .PopulateAuthorizationData(invalidEmail, invalidPassword)
+            .SubmitAuthorizationForm();
+
+        _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
     }
 
     [TearDown]
