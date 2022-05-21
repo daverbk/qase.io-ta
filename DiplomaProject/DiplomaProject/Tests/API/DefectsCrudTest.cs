@@ -4,7 +4,7 @@ using DiplomaProject.Models;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace DiplomaProject.Tests;
+namespace DiplomaProject.Tests.API;
 
 [Category("CRUD-API")]
 [Description("This test suite should be run as a whole, don't run the tests one by one.")]
