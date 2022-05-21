@@ -5,7 +5,7 @@ using DiplomaProject.Services.ApiServices;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace DiplomaProject.Tests;
+namespace DiplomaProject.Tests.API;
 
 [Category("Authentication-API")]
 public class AuthenticationTests : BaseTest
