@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace DiplomaProject.Tests;
 
 [Category("Authentication-API")]
-public class ApiAuthenticationTest : BaseTest
+public class AuthenticationTests : BaseTest
 {
     private ProjectService _projectServiceUserWithInvalidToken = null!;
     private ProjectService _projectServiceUnauthorizedUser = null!;
@@ -23,6 +23,15 @@ public class ApiAuthenticationTest : BaseTest
         _projectServiceUnauthorizedUser = new ProjectService(unauthorizedClient);
     }
 
+    [Test]
+    [Category("Positive")]
+    public void RequestValidAuthentication()
+    {
+        ProjectService.GetAllProjects().Wait();
+
+        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+    
     [Test]
     [Category("Negative")]
     public void RequestInvalidAuthentication()
