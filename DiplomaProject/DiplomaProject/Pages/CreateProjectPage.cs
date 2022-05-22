@@ -9,13 +9,13 @@ public class CreateProjectPage : BasePage
     private static readonly By CodeInputLocator = By.Id("inputCode");
     private static readonly By DescriptionInputLocator = By.Id("inputDescription");
     private static readonly By CreateProjectButtonLocator = By.CssSelector(".col button");
-    
+
     private IWebElement TitleInput => WaitService.WaitUntilElementExists(TitleInputLocator);
-    
+
     private IWebElement CodeInput => WaitService.WaitUntilElementExists(CodeInputLocator);
-    
+
     private IWebElement DescriptionInput => WaitService.WaitUntilElementExists(DescriptionInputLocator);
-    
+
     private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
 
     public CreateProjectPage(IWebDriver driver) : base(driver)
