@@ -1,0 +1,45 @@
+using DiplomaProject.Models;
+using OpenQA.Selenium;
+
+namespace DiplomaProject.Pages;
+
+public class CreateProjectPage : BasePage
+{
+    private static readonly By TitleInputLocator = By.Id("inputTitle");
+    private static readonly By CodeInputLocator = By.Id("inputCode");
+    private static readonly By DescriptionInputLocator = By.Id("inputDescription");
+    private static readonly By CreateProjectButtonLocator = By.CssSelector(".col button");
+    
+    private IWebElement TitleInput => WaitService.WaitUntilElementExists(TitleInputLocator);
+    
+    private IWebElement CodeInput => WaitService.WaitUntilElementExists(CodeInputLocator);
+    
+    private IWebElement DescriptionInput => WaitService.WaitUntilElementExists(DescriptionInputLocator);
+    
+    private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
+
+    public CreateProjectPage(IWebDriver driver) : base(driver)
+    {
+    }
+
+    public CreateProjectPage PopulateProjectData(Project projectToAdd)
+    {
+        TitleInput.SendKeys(projectToAdd.Title);
+        CodeInput.SendKeys(projectToAdd.Code);
+        DescriptionInput.SendKeys(projectToAdd.Description);
+
+        return this;
+    }
+
+    public ProjectPage SubmitProjectForm()
+    {
+        CreateProjectButton.Click();
+
+        return new ProjectPage(Driver);
+    }
+
+    protected override By GetPageIdentifier()
+    {
+        return CreateProjectButtonLocator;
+    }
+}
