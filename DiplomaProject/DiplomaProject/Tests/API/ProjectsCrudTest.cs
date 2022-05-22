@@ -54,6 +54,6 @@ public class ProjectsCrudTest : BaseTest
 
         RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getAllProjectsResponse.Status.Should().BeTrue();
-        getAllProjectsResponse.Result.Count.Should().Be(0);
+        getAllProjectsResponse.Result.Entities.Should().NotContain(project => project.Title == _projectToAdd.Title);
     }
 }
