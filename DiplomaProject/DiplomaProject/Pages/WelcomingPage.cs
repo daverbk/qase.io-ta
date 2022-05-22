@@ -7,7 +7,7 @@ public class WelcomingPage : BasePage
     private static readonly By LoginButtonLocator = By.Id("signin");
 
     private IWebElement LoginButton => WaitService.WaitUntilElementExists(LoginButtonLocator);
-    
+
     public WelcomingPage(IWebDriver driver) : base(driver)
     {
     }
