@@ -1,3 +1,4 @@
+using System;
 using DiplomaProject.Services.SeleniumServices;
 using OpenQA.Selenium;
 
@@ -5,7 +6,8 @@ namespace DiplomaProject.Pages
 {
     public abstract class BasePage
     {
-        protected IWebDriver Driver { get; }
+        [field: ThreadStatic] 
+        protected static IWebDriver Driver { get; private set; } = null!;
 
         protected static WaitService WaitService { get; private set; } = null!;
 
