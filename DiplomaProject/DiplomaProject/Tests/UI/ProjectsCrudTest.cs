@@ -16,6 +16,7 @@ public class ProjectsCrudTest : BaseTest
     private IWebDriver _webDriver = null!;
     private ProjectPage _projectPage = null!;
     private ProjectSettingsPage _projectSettingsPage = null!;
+    private ProjectsPage _projectsPage = null!;
     private LoginStep _loginStep = null!;
 
     private readonly Project _projectToAdd = FakeProject.Generate();
@@ -30,6 +31,7 @@ public class ProjectsCrudTest : BaseTest
         _loginStep = new LoginStep(_webDriver);
         _projectPage = new ProjectPage(_webDriver);
         _projectSettingsPage = new ProjectSettingsPage(_webDriver);
+        _projectsPage = new ProjectsPage(_webDriver);
 
         DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
     }
@@ -57,11 +59,22 @@ public class ProjectsCrudTest : BaseTest
             .PopulateUpdatedProjectData(_projectToUpdateWith)
             .SubmitProjectForm();
 
-        _projectSettingsPage.AlertUpdatedSuccessfullyDisplayed().Should().BeTrue();
-        _projectSettingsPage.AlertUpdatedSuccessfullyMessage().Should().Be("Project settings were successfully updated!");
+        _projectSettingsPage.AlertDisplayed().Should().BeTrue();
+        _projectSettingsPage.AlertMessage().Should().Be("Project settings were successfully updated!");
         _projectSettingsPage.UpdatedData().Title.Should().Be(_projectToUpdateWith.Title);
         _projectSettingsPage.UpdatedData().Code.Should().Be(_projectToUpdateWith.Code);
         _projectSettingsPage.UpdatedData().Description.Should().Be(_projectToUpdateWith.Description);
+    }
+
+    [Test]
+    [Order(3)]
+    public void DeleteProject()
+    {
+        _projectSettingsPage
+            .DeleteProject()
+            .ConfirmDeletion();
+
+        _projectsPage.ProjectExistsInProjectsTable(_projectToUpdateWith.Title).Should().BeFalse();
     }
 
     [OneTimeTearDown]

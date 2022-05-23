@@ -28,6 +28,11 @@ namespace DiplomaProject.Services.SeleniumServices
             return _explicitWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(locator));
         }
         
+        public IWebElement WaitUntilElementIsClickable(IWebElement webElement)
+        {
+            return _explicitWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(webElement));
+        }
+        
         public IWebElement WaitQuickElement(By locator)
         {
             return _fluentWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(locator));
