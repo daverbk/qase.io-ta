@@ -9,7 +9,8 @@ public class ProjectSettingsPage : BasePage
     private static readonly By CodeInputLocator = By.Id("inputCode");
     private static readonly By DescriptionInputLocator = By.Id("inputDescription");
     private static readonly By UpdateSettingsButtonLocator = By.CssSelector(".col button");
-    private static readonly By UpdatedSuccessfullyAlertLocator = By.ClassName("alert-message");
+    private static readonly By AlertLocator = By.ClassName("alert-message");
+    private static readonly By DeleteProjectButtonLocator = By.ClassName("btn-cancel");
 
     private IWebElement TitleInput => WaitService.WaitUntilElementExists(TitleInputLocator);
 
@@ -19,7 +20,9 @@ public class ProjectSettingsPage : BasePage
 
     private IWebElement UpdateSettingsButton => WaitService.WaitUntilElementExists(UpdateSettingsButtonLocator);
 
-    private IWebElement UpdatedSuccessfullyAlert => WaitService.WaitQuickElement(UpdatedSuccessfullyAlertLocator);
+    private IWebElement Alert => WaitService.WaitQuickElement(AlertLocator);
+
+    private IWebElement DeleteProjectButton => WaitService.WaitUntilElementExists(DeleteProjectButtonLocator);
 
     public ProjectSettingsPage(IWebDriver driver) : base(driver)
     {
@@ -44,14 +47,14 @@ public class ProjectSettingsPage : BasePage
         UpdateSettingsButton.Click();
     }
 
-    public bool AlertUpdatedSuccessfullyDisplayed()
+    public bool AlertDisplayed()
     {
-        return UpdatedSuccessfullyAlert.Displayed;
+        return Alert.Displayed;
     }
 
-    public string AlertUpdatedSuccessfullyMessage()
+    public string AlertMessage()
     {
-        return UpdatedSuccessfullyAlert.Text;
+        return Alert.Text;
     }
 
     public Project UpdatedData()
@@ -62,6 +65,13 @@ public class ProjectSettingsPage : BasePage
             Code = CodeInput.GetAttribute("value"),
             Description = DescriptionInput.GetAttribute("value")
         };
+    }
+
+    public DeleteProjectPage DeleteProject()
+    {
+        DeleteProjectButton.Click();
+
+        return new DeleteProjectPage(Driver);
     }
 
     protected override By GetPageIdentifier()

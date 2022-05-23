@@ -31,11 +31,9 @@ public class CreateProjectPage : BasePage
         return this;
     }
 
-    public ProjectPage SubmitProjectForm()
+    public void SubmitProjectForm()
     {
         CreateProjectButton.Click();
-
-        return new ProjectPage(Driver);
     }
 
     protected override By GetPageIdentifier()
