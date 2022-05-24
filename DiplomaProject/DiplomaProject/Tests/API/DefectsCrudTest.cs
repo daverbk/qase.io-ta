@@ -1,13 +1,21 @@
 using System.Net;
+using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Models;
 using FluentAssertions;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 
 namespace DiplomaProject.Tests.API;
 
+[AllureNUnit]
+[AllureParentSuite("API")]
+[AllureSuite("Defects-API")]
+[AllureEpic("Defects-API")]
+[AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
-[Description("This test suite should be run as a whole, don't run the tests one by one.")]
+[AllureTms("tms", "suite=12&previewMode=modal&case=25")]
 public class DefectsCrudTest : BaseTest
 {
     private readonly Project _projectToAdd = FakeProject.Generate();
@@ -26,6 +34,7 @@ public class DefectsCrudTest : BaseTest
 
     [Test]
     [Order(1)]
+    [AllureStep("Create a new defect")]
     public void CreateDefect()
     {
         var defectCreationResponse =
@@ -38,6 +47,7 @@ public class DefectsCrudTest : BaseTest
 
     [Test]
     [Order(2)]
+    [AllureStep("Update the defect")]
     public void UpdateDefect()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
@@ -52,6 +62,7 @@ public class DefectsCrudTest : BaseTest
 
     [Test]
     [Order(3)]
+    [AllureStep("Read the defect")]
     public void GetDefect()
     {
         var getDefectResponse = DefectService
@@ -65,6 +76,7 @@ public class DefectsCrudTest : BaseTest
 
     [Test]
     [Order(4)]
+    [AllureStep("Delete the defect")]
     public void DeleteDefect()
     {
         var deleteDefectResponse = DefectService
@@ -77,10 +89,11 @@ public class DefectsCrudTest : BaseTest
 
     [Test]
     [Order(5)]
+    [AllureStep("Read all the remaining defects")]
     public void GetAllDefects()
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
-        
+
         RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getAllDefectsResponse.Status.Should().BeTrue();
         getAllDefectsResponse.Result.Count.Should().Be(0);
