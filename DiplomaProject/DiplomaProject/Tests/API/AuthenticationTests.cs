@@ -16,7 +16,7 @@ namespace DiplomaProject.Tests.API;
 [AllureEpic("Authentication-API")]
 [Category("Authentication-API")]
 [AllureSeverity(SeverityLevel.blocker)]
-public class AuthenticationTests : BaseTest
+public class AuthenticationApiTests : BaseApiTest
 {
     private ProjectService _projectServiceUserWithInvalidToken = null!;
     private ProjectService _projectServiceUnauthorizedUser = null!;
@@ -35,7 +35,7 @@ public class AuthenticationTests : BaseTest
     [Category("Positive")]
     [AllureStep("Authenticate using valid data")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=28")]
-    public void RequestValidAuthentication()
+    public void Authentication_ValidToken_SuccessfulAuthentication()
     {
         ProjectService.GetAllProjects().Wait();
 
@@ -46,7 +46,7 @@ public class AuthenticationTests : BaseTest
     [Category("Negative")]
     [AllureStep("Authenticate using invalid data")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
-    public void RequestInvalidAuthentication()
+    public void Authentication_InvalidToken_Unauthorized()
     {
         _projectServiceUserWithInvalidToken.GetAllProjects().Wait();
 
@@ -58,7 +58,7 @@ public class AuthenticationTests : BaseTest
     [Category("Negative")]
     [AllureStep("Authenticate using no authentication set in client")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=27")]
-    public void RequestNoAuthentication()
+    public void Authentication_NoToken_Unauthorized()
     {
         _projectServiceUnauthorizedUser.GetAllProjects().Wait();
 

@@ -1,12 +1,10 @@
 using Allure.Commons;
 using DiplomaProject.Configuration;
 using DiplomaProject.Pages;
-using DiplomaProject.Services.SeleniumServices;
 using FluentAssertions;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace DiplomaProject.Tests.UI;
 
@@ -15,23 +13,18 @@ namespace DiplomaProject.Tests.UI;
 [AllureEpic("Authorization-UI")]
 [AllureSeverity(SeverityLevel.blocker)]
 [Category("Authorization-UI")]
-public class AuthorizationTests
+public class AuthorizationTests : BaseUiTest
 {
-    private IWebDriver _webDriver = null!;
     private WelcomingPage _welcomingPage = null!;
     private AuthorizationPage _authorizationPage = null!;
     private ProjectsPage _projectsPage = null!;
 
     [SetUp]
-    public void OpenBrowserAtWelcomingPage()
+    public void InstantiateRequiredPages()
     {
-        DriverFactory.InitBrowser();
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
-
-        _webDriver = DriverFactory.Driver;
-        _welcomingPage = new WelcomingPage(_webDriver);
-        _authorizationPage = new AuthorizationPage(_webDriver);
-        _projectsPage = new ProjectsPage(_webDriver);
+        _welcomingPage = new WelcomingPage(Driver);
+        _authorizationPage = new AuthorizationPage(Driver);
+        _projectsPage = new ProjectsPage(Driver);
     }
 
     [Test]
@@ -39,7 +32,7 @@ public class AuthorizationTests
     [AllureSuite("Authorization-UI")]
     [AllureStep("Authorize using valid data")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
-    public void PositiveLogIn()
+    public void Authorization_PopulatedValidData_ProjectsPageOpened()
     {
         _welcomingPage
             .ProceedToLoggingIn()
@@ -54,7 +47,7 @@ public class AuthorizationTests
     [AllureSuite("Authorization-UI")]
     [AllureStep("Authorize using invalid data")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
-    public void NegativeLogIn()
+    public void Authorization_PopulatedInvalidData_ErrorMessageDisplayed()
     {
         const string invalidEmail = "1111@sma.b";
         const string invalidPassword = "11111";
@@ -74,7 +67,7 @@ public class AuthorizationTests
     [AllureStep("Input sql injections into password field")]
     [TestCase("' or \""), TestCase("UNION ALL SELECT USER()--"), TestCase("admin' or 1=1")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=22")]
-    public void SqlInjections(string sqlInjections)
+    public void Authorization_InsertedSqlInjection_ErrorMessageDisplayed(string sqlInjections)
     {
         _welcomingPage
             .ProceedToLoggingIn()
@@ -82,11 +75,5 @@ public class AuthorizationTests
             .SubmitAuthorizationForm();
 
         _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
-    }
-
-    [TearDown]
-    public void QuiteBrowser()
-    {
-        _webDriver.Quit();
     }
 }

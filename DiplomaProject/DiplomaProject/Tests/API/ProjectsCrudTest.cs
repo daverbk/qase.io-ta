@@ -1,6 +1,7 @@
 using System.Net;
 using Allure.Commons;
 using DiplomaProject.Clients;
+using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
 using NUnit.Allure.Attributes;
@@ -16,15 +17,15 @@ namespace DiplomaProject.Tests.API;
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
 [AllureTms("tms", "suite=11&case=23&previewMode=modal")]
-public class ProjectsCrudTest : BaseTest
+public class ProjectsCrudApiTest : BaseApiTest
 {
-    private readonly Project _projectToAdd = FakeProject.Generate();
+    private readonly Project _projectToAdd = new ProjectFaker().Generate();
     private string _onSiteProjectCodeAfterCreation = null!;
 
     [Test]
     [Order(1)]
     [AllureStep("Create a new project")]
-    public void CreateProject()
+    public void CreateProject_CreateRequest_ProjectIsCreated()
     {
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
@@ -36,7 +37,7 @@ public class ProjectsCrudTest : BaseTest
     [Test]
     [Order(2)]
     [AllureStep("Read the project")]
-    public void GetProject()
+    public void UpdateProject_UpdateRequest_ProjectIsUpdated()
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
@@ -49,7 +50,7 @@ public class ProjectsCrudTest : BaseTest
     [Test]
     [Order(3)]
     [AllureStep("Delete the project")]
-    public void DeleteProject()
+    public void DeleteProject_DeleteRequest_ProjectIsDeleted()
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
@@ -60,7 +61,7 @@ public class ProjectsCrudTest : BaseTest
     [Test]
     [Order(4)]
     [AllureStep("Read all the remaining projects")]
-    public void GetAllProjects()
+    public void GetAllProjects_GetAllRequest_AllProjectsAreReturned()
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;
 
