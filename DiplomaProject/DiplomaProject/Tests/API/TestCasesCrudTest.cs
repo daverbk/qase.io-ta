@@ -1,6 +1,7 @@
 using System.Net;
 using Allure.Commons;
 using DiplomaProject.Clients;
+using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
 using NUnit.Allure.Attributes;
@@ -16,11 +17,11 @@ namespace DiplomaProject.Tests.API;
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
 [AllureTms("tms", "suite=13&case=24&previewMode=modal")]
-public class TestCasesCrudTest : BaseTest
+public class ApiTestCasesCrudApiTest : BaseApiTest
 {
-    private readonly Project _projectToAdd = FakeProject.Generate();
-    private readonly TestCase _testCaseToAdd = FakeTestCase.Generate();
-    private readonly TestCase _testCaseToUpdateWith = FakeTestCase.Generate();
+    private readonly Project _projectToAdd = new ProjectFaker().Generate();
+    private readonly TestCase _testCaseToAdd = new TestCaseFaker().Generate();
+    private readonly TestCase _testCaseToUpdateWith = new TestCaseFaker().Generate();
 
     private string _onSiteProjectCodeAfterCreation = null!;
     private long _onSiteTestCaseIdAfterCreation;
@@ -35,7 +36,7 @@ public class TestCasesCrudTest : BaseTest
     [Test]
     [Order(1)]
     [AllureStep("Create a test case")]
-    public void CreateTestCase()
+    public void CreateTestCase_CreateRequest_TestCaseIsCreated()
     {
         var testCaseCreationResponse =
             CaseService.CreateNewTestCase(_testCaseToAdd, _onSiteProjectCodeAfterCreation).Result;
@@ -48,7 +49,7 @@ public class TestCasesCrudTest : BaseTest
     [Test]
     [Order(2)]
     [AllureStep("Update the test case")]
-    public void UpdateTestCase()
+    public void UpdateTestCase_UpdateRequest_TestCaseIsUpdated()
     {
         _testCaseToUpdateWith.Id = _onSiteTestCaseIdAfterCreation;
 
@@ -63,7 +64,7 @@ public class TestCasesCrudTest : BaseTest
     [Test]
     [Order(3)]
     [AllureStep("Read the test case")]
-    public void GetTestCase()
+    public void GetTestCase_GetRequest_TestCaseIsReturned()
     {
         var getTestCaseResponse = CaseService
             .GetSpecificTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
@@ -79,7 +80,7 @@ public class TestCasesCrudTest : BaseTest
     [Test]
     [Order(4)]
     [AllureStep("Delete the test case")]
-    public void DeleteTestCase()
+    public void DeleteTestCase_DeleteRequest_TestCaseIsDeleted()
     {
         var deleteTestCaseResponse = CaseService
             .DeleteTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
@@ -92,7 +93,7 @@ public class TestCasesCrudTest : BaseTest
     [Test]
     [Order(5)]
     [AllureStep("Read the remaining test cases")]
-    public void GetAllTestCases()
+    public void GetAllTestCases_GetAllRequest_AllTestCasesAreReturned()
     {
         var getAllTestCasesResponse = CaseService.GetAllTestCases(_onSiteProjectCodeAfterCreation).Result;
 

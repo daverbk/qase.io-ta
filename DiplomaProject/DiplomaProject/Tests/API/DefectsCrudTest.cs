@@ -1,6 +1,7 @@
 using System.Net;
 using Allure.Commons;
 using DiplomaProject.Clients;
+using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
 using NUnit.Allure.Attributes;
@@ -16,11 +17,11 @@ namespace DiplomaProject.Tests.API;
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
 [AllureTms("tms", "suite=12&previewMode=modal&case=25")]
-public class DefectsCrudTest : BaseTest
+public class DefectsCrudApiTest : BaseApiTest
 {
-    private readonly Project _projectToAdd = FakeProject.Generate();
-    private readonly Defect _defectToAdd = FakeDefect.Generate();
-    private readonly Defect _defectToUpdateWith = FakeDefect.Generate();
+    private readonly Project _projectToAdd = new ProjectFaker().Generate();
+    private readonly Defect _defectToAdd = new DefectFaker().Generate();
+    private readonly Defect _defectToUpdateWith = new DefectFaker().Generate();
 
     private string _onSiteProjectCodeAfterCreation = null!;
     private long _onSiteDefectIdAfterCreation;
@@ -35,7 +36,7 @@ public class DefectsCrudTest : BaseTest
     [Test]
     [Order(1)]
     [AllureStep("Create a new defect")]
-    public void CreateDefect()
+    public void CreateDefect_CreateRequest_DefectIsCreated()
     {
         var defectCreationResponse =
             DefectService.CreateNewDefect(_defectToAdd, _onSiteProjectCodeAfterCreation).Result;
@@ -48,7 +49,7 @@ public class DefectsCrudTest : BaseTest
     [Test]
     [Order(2)]
     [AllureStep("Update the defect")]
-    public void UpdateDefect()
+    public void UpdateDefect_UpdateRequest_DefectIsUpdated()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
 
@@ -63,7 +64,7 @@ public class DefectsCrudTest : BaseTest
     [Test]
     [Order(3)]
     [AllureStep("Read the defect")]
-    public void GetDefect()
+    public void GetDefect_GetRequest_DefectIsReturned()
     {
         var getDefectResponse = DefectService
             .GetSpecificDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
@@ -77,7 +78,7 @@ public class DefectsCrudTest : BaseTest
     [Test]
     [Order(4)]
     [AllureStep("Delete the defect")]
-    public void DeleteDefect()
+    public void DeleteDefect_DeleteRequest_DefectIsDeleted()
     {
         var deleteDefectResponse = DefectService
             .DeleteDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
@@ -90,7 +91,7 @@ public class DefectsCrudTest : BaseTest
     [Test]
     [Order(5)]
     [AllureStep("Read all the remaining defects")]
-    public void GetAllDefects()
+    public void GetAllDefects_GetAllRequest_AllDefectsAreReturned()
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
 
