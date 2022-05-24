@@ -1,5 +1,6 @@
 using Allure.Commons;
 using DiplomaProject.Configuration;
+using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using DiplomaProject.Pages;
 using DiplomaProject.Services.SeleniumServices;
@@ -18,16 +19,17 @@ namespace DiplomaProject.Tests.UI;
 [AllureEpic("Projects-UI")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-UI")]
-public class ProjectsCrudTest : BaseTest
+public class ProjectsCrudApiTest
 {
     private IWebDriver _webDriver = null!;
+
     private ProjectPage _projectPage = null!;
     private ProjectSettingsPage _projectSettingsPage = null!;
     private ProjectsPage _projectsPage = null!;
     private LoginStep _loginStep = null!;
 
-    private readonly Project _projectToAdd = FakeProject.Generate();
-    private readonly Project _projectToUpdateWith = FakeProject.Generate();
+    private readonly Project _projectToAdd = new ProjectFaker().Generate();
+    private readonly Project _projectToUpdateWith = new ProjectFaker().Generate();
 
     [OneTimeSetUp]
     public void OpenBrowserAtWelcomingPage()
@@ -47,7 +49,7 @@ public class ProjectsCrudTest : BaseTest
     [Order(1)]
     [AllureStep("Create a project")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=11")]
-    public void CreateProject()
+    public void CreateProject_PopulateProjectForm_ProjectIsCreated()
     {
         _loginStep
             .LogIn(Configurator.Admin.Email, Configurator.Admin.Password)
@@ -63,7 +65,7 @@ public class ProjectsCrudTest : BaseTest
     [Order(2)]
     [AllureStep("Update the project")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=12")]
-    public void UpdateProject()
+    public void UpdateProject_PopulateUpdateProjectForm_ProjectIsUpdated()
     {
         _projectPage
             .NavigateToSettings()
@@ -81,7 +83,7 @@ public class ProjectsCrudTest : BaseTest
     [Order(3)]
     [AllureStep("Delete the updated project")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=13")]
-    public void DeleteProject()
+    public void DeleteProject_ConfirmDeletion_ProjectIsDeleted()
     {
         _projectSettingsPage
             .DeleteProject()
@@ -91,7 +93,7 @@ public class ProjectsCrudTest : BaseTest
     }
 
     [OneTimeTearDown]
-    public void QuiteBrowser()
+    public void QuitBrowser()
     {
         _webDriver.Quit();
     }
