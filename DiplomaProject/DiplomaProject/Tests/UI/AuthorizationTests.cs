@@ -1,14 +1,20 @@
+using Allure.Commons;
 using DiplomaProject.Configuration;
 using DiplomaProject.Pages;
 using DiplomaProject.Services.SeleniumServices;
 using FluentAssertions;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Tests.UI;
 
+[AllureNUnit]
+[AllureParentSuite("UI")]
+[AllureEpic("Authorization-UI")]
+[AllureSeverity(SeverityLevel.blocker)]
 [Category("Authorization-UI")]
-[Description("This test suite should be run as a whole, don't run the tests one by one.")]
 public class AuthorizationTests
 {
     private IWebDriver _webDriver = null!;
@@ -30,6 +36,9 @@ public class AuthorizationTests
 
     [Test]
     [Category("Positive")]
+    [AllureSuite("Authorization-UI")]
+    [AllureStep("Authorize using valid data")]
+    [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
     public void PositiveLogIn()
     {
         _welcomingPage
@@ -42,6 +51,9 @@ public class AuthorizationTests
 
     [Test]
     [Category("Negative")]
+    [AllureSuite("Authorization-UI")]
+    [AllureStep("Authorize using invalid data")]
+    [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
     public void NegativeLogIn()
     {
         const string invalidEmail = "1111@sma.b";
@@ -54,12 +66,14 @@ public class AuthorizationTests
 
         _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
     }
-    
+
     [Test]
     [Category("Security")]
-    [TestCase("' or \"")]
-    [TestCase("UNION ALL SELECT USER()--")]
-    [TestCase("admin' or 1=1")]
+    [AllureSuite("SQL Injections")]
+    [AllureStory("SQL Injections")]
+    [AllureStep("Input sql injections into password field")]
+    [TestCase("' or \""), TestCase("UNION ALL SELECT USER()--"), TestCase("admin' or 1=1")]
+    [AllureTms("tms", "suite=9&previewMode=modal&case=22")]
     public void SqlInjections(string sqlInjections)
     {
         _welcomingPage

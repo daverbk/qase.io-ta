@@ -38,7 +38,7 @@ public class AuthorizationPage : BasePage
     {
         LoginButton.Click();
     }
-    
+
     protected override By GetPageIdentifier()
     {
         return LoginButtonLocator;

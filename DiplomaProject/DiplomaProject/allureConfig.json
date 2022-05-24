@@ -1,0 +1,8 @@
+{
+  "allure": {
+    "directory": "..//..//..//allure-results",
+    "links": [
+      "https://app.qase.io/project/Diploma?view=2&{tms}"
+    ]
+  }
+}

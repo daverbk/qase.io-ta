@@ -1,16 +1,23 @@
+using Allure.Commons;
 using DiplomaProject.Configuration;
 using DiplomaProject.Models;
 using DiplomaProject.Pages;
 using DiplomaProject.Services.SeleniumServices;
 using DiplomaProject.Steps;
 using FluentAssertions;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Tests.UI;
 
+[AllureNUnit]
+[AllureParentSuite("UI")]
+[AllureSuite("Projects-UI")]
+[AllureEpic("Projects-UI")]
+[AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-UI")]
-[Description("This test suite should be run as a whole, don't run the tests one by one.")]
 public class ProjectsCrudTest : BaseTest
 {
     private IWebDriver _webDriver = null!;
@@ -38,6 +45,8 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(1)]
+    [AllureStep("Create a project")]
+    [AllureTms("tms", "suite=6&previewMode=modal&case=11")]
     public void CreateProject()
     {
         _loginStep
@@ -52,6 +61,8 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(2)]
+    [AllureStep("Update the project")]
+    [AllureTms("tms", "suite=6&previewMode=modal&case=12")]
     public void UpdateProject()
     {
         _projectPage
@@ -68,6 +79,8 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(3)]
+    [AllureStep("Delete the updated project")]
+    [AllureTms("tms", "suite=6&previewMode=modal&case=13")]
     public void DeleteProject()
     {
         _projectSettingsPage

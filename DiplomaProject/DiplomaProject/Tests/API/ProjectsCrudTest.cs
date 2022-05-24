@@ -1,13 +1,21 @@
 using System.Net;
+using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Models;
 using FluentAssertions;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 
 namespace DiplomaProject.Tests.API;
 
+[AllureNUnit]
+[AllureParentSuite("API")]
+[AllureSuite("Projects-API")]
+[AllureEpic("Projects-API")]
+[AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
-[Description("This test suite should be run as a whole, don't run the tests one by one.")]
+[AllureTms("tms", "suite=11&case=23&previewMode=modal")]
 public class ProjectsCrudTest : BaseTest
 {
     private readonly Project _projectToAdd = FakeProject.Generate();
@@ -15,6 +23,7 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(1)]
+    [AllureStep("Create a new project")]
     public void CreateProject()
     {
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
@@ -26,6 +35,7 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(2)]
+    [AllureStep("Read the project")]
     public void GetProject()
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -38,6 +48,7 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(3)]
+    [AllureStep("Delete the project")]
     public void DeleteProject()
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -48,6 +59,7 @@ public class ProjectsCrudTest : BaseTest
 
     [Test]
     [Order(4)]
+    [AllureStep("Read all the remaining projects")]
     public void GetAllProjects()
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;
