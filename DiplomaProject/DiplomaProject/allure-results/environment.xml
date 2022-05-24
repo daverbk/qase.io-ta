@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <environment>
+    
     <parameter>
         <key>Browser</key>
         <value>Chrome</value>
     </parameter>
+    
     <parameter>
         <key>Browser version</key>
         <value>99.0.4844</value>
     </parameter>
+    
     <parameter>
         <key>OS</key>
         <value>MacOS</value>
     </parameter>
+    
     <parameter>
         <key>OS version</key>
         <value>Monterey 12.3.1</value>
     </parameter>
+    
 </environment>
