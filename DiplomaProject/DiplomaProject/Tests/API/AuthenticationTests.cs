@@ -34,7 +34,7 @@ public class AuthenticationApiTests : BaseApiTest
     [Test]
     [Category("Positive")]
     [AllureStep("Authenticate using valid data")]
-    [AllureTms("tms", "suite=15&previewMode=modal&case=28")]
+    [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_ValidToken_SuccessfulAuthentication()
     {
         ProjectService.GetAllProjects().Wait();
@@ -57,7 +57,7 @@ public class AuthenticationApiTests : BaseApiTest
     [Test]
     [Category("Negative")]
     [AllureStep("Authenticate using no authentication set in client")]
-    [AllureTms("tms", "suite=15&previewMode=modal&case=27")]
+    [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_NoToken_Unauthorized()
     {
         _projectServiceUnauthorizedUser.GetAllProjects().Wait();
