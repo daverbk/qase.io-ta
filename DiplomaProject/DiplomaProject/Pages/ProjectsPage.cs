@@ -27,7 +27,19 @@ public class ProjectsPage : BasePage
 
     public bool ProjectExistsInTable(string projectName)
     {
+        if (ProjectsTableExists() == false)
+        {
+            return false;
+        }
+        
         return ProjectsTable.ProjectExists(projectName);
+    }
+
+    private bool ProjectsTableExists()
+    {
+        var tableFoundIndicator = Driver.FindElements(By.TagName("table"));
+        
+        return tableFoundIndicator.Count != 0;
     }
 
     protected override By GetPageIdentifier()
