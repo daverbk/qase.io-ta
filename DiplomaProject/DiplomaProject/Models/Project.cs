@@ -8,7 +8,5 @@ public record Project
 
     [JsonPropertyName("code")] public string Code { get; set; } = null!;
 
-    [JsonPropertyName("description")] public string Description { get; set; } = null!;
-
     [JsonPropertyName("access")] public string Access { get; set; } = null!;
 }
