@@ -1,4 +1,5 @@
 using DiplomaProject.Wrappers;
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -10,12 +11,13 @@ public class ProjectsPage : BasePage
 
     private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
 
-    private static Table ProjectsTable => new Table(Driver, ProjectsTableLocator);
+    private static Table ProjectsTable => new(Driver, ProjectsTableLocator);
 
     public ProjectsPage(IWebDriver driver) : base(driver)
     {
     }
 
+    [AllureStep("Click \"Create new project\" button")]
     public CreateProjectPage ClickCreateNewProjectButton()
     {
         CreateProjectButton.Click();
@@ -23,9 +25,21 @@ public class ProjectsPage : BasePage
         return new CreateProjectPage(Driver);
     }
 
-    public bool ProjectExistsInProjectsTable(string projectName)
+    public bool ProjectExistsInTable(string projectName)
     {
+        if (ProjectsTableExists() == false)
+        {
+            return false;
+        }
+        
         return ProjectsTable.ProjectExists(projectName);
+    }
+
+    private bool ProjectsTableExists()
+    {
+        var tableFoundIndicator = Driver.FindElements(By.TagName("table"));
+        
+        return tableFoundIndicator.Count != 0;
     }
 
     protected override By GetPageIdentifier()

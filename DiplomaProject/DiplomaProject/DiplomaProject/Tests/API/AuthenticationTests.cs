@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Configuration.Enums;
 using DiplomaProject.Services.ApiServices;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -33,7 +34,8 @@ public class AuthenticationApiTests : BaseApiTest
 
     [Test]
     [Category("Positive")]
-    [AllureStep("Authenticate using valid data")]
+    [AllureName("Authentication using valid data")]
+    [AllureStep("Send \"get all projects\" request from a validly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_ValidToken_SuccessfulAuthentication()
     {
@@ -44,25 +46,33 @@ public class AuthenticationApiTests : BaseApiTest
 
     [Test]
     [Category("Negative")]
-    [AllureStep("Authenticate using invalid data")]
+    [AllureName("Authentication using invalid data")]
+    [AllureStep("Send \"get all projects\" request from an invalidly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_InvalidToken_Unauthorized()
     {
         _projectServiceUserWithInvalidToken.GetAllProjects().Wait();
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        RestClientExtended.LastCallResponse.Content.Should().Contain("API token is invalid");
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            RestClientExtended.LastCallResponse.Content.Should().Contain("API token is invalid");
+        }
     }
 
     [Test]
     [Category("Negative")]
-    [AllureStep("Authenticate using no authentication set in client")]
+    [AllureName("Authentication using no authentication set in client")]
+    [AllureStep("Send \"get all projects\" request from an unauthorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_NoToken_Unauthorized()
     {
         _projectServiceUnauthorizedUser.GetAllProjects().Wait();
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        RestClientExtended.LastCallResponse.Content.Should().Contain("API token not provided");
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            RestClientExtended.LastCallResponse.Content.Should().Contain("API token not provided");
+        }
     }
 }

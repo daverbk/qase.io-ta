@@ -6,6 +6,7 @@ using DiplomaProject.Pages;
 using DiplomaProject.Services.SeleniumServices;
 using DiplomaProject.Steps;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace DiplomaProject.Tests.UI;
 [AllureEpic("Projects-UI")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-UI")]
-public class ProjectsCrudApiTest
+public class ProjectsCrudUiTest
 {
     private IWebDriver _webDriver = null!;
 
@@ -47,7 +48,7 @@ public class ProjectsCrudApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a project")]
+    [AllureName("Create a project with requited fields filled")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=11")]
     public void CreateProject_PopulateProjectForm_ProjectIsCreated()
     {
@@ -57,13 +58,16 @@ public class ProjectsCrudApiTest
             .PopulateProjectData(_projectToAdd)
             .SubmitProjectForm();
 
-        _projectPage.PageOpened.Should().BeTrue();
-        _projectPage.ProjectTitleText().Should().Be(_projectToAdd.Title);
+        using (new AssertionScope())
+        {
+            _projectPage.PageOpened.Should().BeTrue();
+            _projectPage.ProjectTitleText().Should().Be(_projectToAdd.Title);
+        }
     }
 
     [Test]
     [Order(2)]
-    [AllureStep("Update the project")]
+    [AllureName("Update the project with required fields filled")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=12")]
     public void UpdateProject_PopulateUpdateProjectForm_ProjectIsUpdated()
     {
@@ -72,16 +76,18 @@ public class ProjectsCrudApiTest
             .PopulateUpdatedProjectData(_projectToUpdateWith)
             .SubmitProjectForm();
 
-        _projectSettingsPage.AlertDisplayed().Should().BeTrue();
-        _projectSettingsPage.AlertMessage().Should().Be("Project settings were successfully updated!");
-        _projectSettingsPage.UpdatedData().Title.Should().Be(_projectToUpdateWith.Title);
-        _projectSettingsPage.UpdatedData().Code.Should().Be(_projectToUpdateWith.Code);
-        _projectSettingsPage.UpdatedData().Description.Should().Be(_projectToUpdateWith.Description);
+        using (new AssertionScope())
+        {
+            _projectSettingsPage.AlertDisplayed().Should().BeTrue();
+            _projectSettingsPage.AlertMessage().Should().Be("Project settings were successfully updated!");
+            _projectSettingsPage.UpdatedData().Title.Should().Be(_projectToUpdateWith.Title);
+            _projectSettingsPage.UpdatedData().Code.Should().Be(_projectToUpdateWith.Code);
+        }
     }
 
     [Test]
     [Order(3)]
-    [AllureStep("Delete the updated project")]
+    [AllureName("Delete the updated project")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=13")]
     public void DeleteProject_ConfirmDeletion_ProjectIsDeleted()
     {
@@ -89,7 +95,7 @@ public class ProjectsCrudApiTest
             .DeleteProject()
             .ConfirmDeletion();
 
-        _projectsPage.ProjectExistsInProjectsTable(_projectToUpdateWith.Title).Should().BeFalse();
+        _projectsPage.ProjectExistsInTable(_projectToUpdateWith.Title).Should().BeFalse();
     }
 
     [OneTimeTearDown]

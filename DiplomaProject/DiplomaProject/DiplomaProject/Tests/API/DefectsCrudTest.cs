@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -35,20 +36,25 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a new defect")]
+    [AllureName("Create a new defect with required data filled")]
+    [AllureStep("Send a \"create a new defect\" request")]
     public void CreateDefect_CreateRequest_DefectIsCreated()
     {
         var defectCreationResponse =
             DefectService.CreateNewDefect(_defectToAdd, _onSiteProjectCodeAfterCreation).Result;
         _onSiteDefectIdAfterCreation = defectCreationResponse.Result.Id;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        defectCreationResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            defectCreationResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
     [Order(2)]
-    [AllureStep("Update the defect")]
+    [AllureName("Update the defect with required data filled")]
+    [AllureStep("Send a \"update a defect\" request")]
     public void UpdateDefect_UpdateRequest_DefectIsUpdated()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
@@ -56,48 +62,63 @@ public class DefectsCrudApiTest : BaseApiTest
         var updateDefectResponse =
             DefectService.UpdateDefect(_defectToUpdateWith, _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        updateDefectResponse.Status.Should().BeTrue();
-        updateDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            updateDefectResponse.Status.Should().BeTrue();
+            updateDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        }
     }
 
     [Test]
     [Order(3)]
-    [AllureStep("Read the defect")]
+    [AllureName("Read the defect")]
+    [AllureStep("Send a \"get a defect by id\" request")]
     public void GetDefect_GetRequest_DefectIsReturned()
     {
         var getDefectResponse = DefectService
             .GetSpecificDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getDefectResponse.Status.Should().BeTrue();
-        getDefectResponse.Result.Title.Should().Be(_defectToUpdateWith.Title);
-        getDefectResponse.Result.ActualResult.Should().Be(_defectToUpdateWith.ActualResult);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getDefectResponse.Status.Should().BeTrue();
+            getDefectResponse.Result.Title.Should().Be(_defectToUpdateWith.Title);
+            getDefectResponse.Result.ActualResult.Should().Be(_defectToUpdateWith.ActualResult);
+        }
     }
 
     [Test]
     [Order(4)]
-    [AllureStep("Delete the defect")]
+    [AllureName("Delete the defect")]
+    [AllureStep("Send a \"delete a defect\" request")]
     public void DeleteDefect_DeleteRequest_DefectIsDeleted()
     {
         var deleteDefectResponse = DefectService
             .DeleteDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        deleteDefectResponse.Status.Should().BeTrue();
-        deleteDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteDefectResponse.Status.Should().BeTrue();
+            deleteDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        }
     }
 
     [Test]
     [Order(5)]
-    [AllureStep("Read all the remaining defects")]
+    [AllureName("Read all the remaining defects")]
+    [AllureStep("Send a \"get all defects\" request")]
     public void GetAllDefects_GetAllRequest_AllDefectsAreReturned()
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getAllDefectsResponse.Status.Should().BeTrue();
-        getAllDefectsResponse.Result.Count.Should().Be(0);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getAllDefectsResponse.Status.Should().BeTrue();
+            getAllDefectsResponse.Result.Count.Should().Be(0);
+        }
     }
 
     [OneTimeTearDown]

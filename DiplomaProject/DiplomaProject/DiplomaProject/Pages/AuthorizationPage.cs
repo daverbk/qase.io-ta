@@ -1,3 +1,4 @@
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -20,7 +21,8 @@ public class AuthorizationPage : BasePage
     public AuthorizationPage(IWebDriver driver) : base(driver)
     {
     }
-
+    
+    [AllureStep("Populate authorization data with: login {0} password {1}")]
     public AuthorizationPage PopulateAuthorizationData(string login, string password)
     {
         EmailField.SendKeys(login);
@@ -29,14 +31,15 @@ public class AuthorizationPage : BasePage
         return this;
     }
 
-    public bool ErrorMessageDisplayed()
-    {
-        return AuthorizationErrorMessage.Displayed;
-    }
-
+    [AllureStep("Submit authorization form")]
     public void SubmitAuthorizationForm()
     {
         LoginButton.Click();
+    }
+    
+    public bool ErrorMessageDisplayed()
+    {
+        return AuthorizationErrorMessage.Displayed;
     }
 
     protected override By GetPageIdentifier()
