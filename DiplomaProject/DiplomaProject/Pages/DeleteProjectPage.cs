@@ -1,3 +1,4 @@
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -12,6 +13,7 @@ public class DeleteProjectPage : BasePage
     {
     }
 
+    [AllureStep("Confirm project deletion")]
     public void ConfirmDeletion()
     {
         DeleteButton.Click();

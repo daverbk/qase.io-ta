@@ -30,7 +30,7 @@ public class AuthorizationTests : BaseUiTest
     [Test]
     [Category("Positive")]
     [AllureSuite("Authorization-UI")]
-    [AllureStep("Authorize using valid data")]
+    [AllureName("Authorization using valid data")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
     public void Authorization_PopulatedValidData_ProjectsPageOpened()
     {
@@ -45,7 +45,7 @@ public class AuthorizationTests : BaseUiTest
     [Test]
     [Category("Negative")]
     [AllureSuite("Authorization-UI")]
-    [AllureStep("Authorize using invalid data")]
+    [AllureName("Authorization using invalid data")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
     public void Authorization_PopulatedInvalidData_ErrorMessageDisplayed()
     {
@@ -64,8 +64,8 @@ public class AuthorizationTests : BaseUiTest
     [Category("Security")]
     [AllureSuite("SQL Injections")]
     [AllureStory("SQL Injections")]
-    [AllureStep("Input sql injections into password field")]
     [TestCase("' or \""), TestCase("UNION ALL SELECT USER()--"), TestCase("admin' or 1=1")]
+    [AllureName("Sql injections input into password field")]
     [AllureTms("tms", "suite=9&previewMode=modal&case=22")]
     public void Authorization_InsertedSqlInjection_ErrorMessageDisplayed(string sqlInjections)
     {

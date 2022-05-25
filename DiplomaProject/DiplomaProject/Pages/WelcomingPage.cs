@@ -1,3 +1,4 @@
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -12,6 +13,7 @@ public class WelcomingPage : BasePage
     {
     }
 
+    [AllureStep("Click \"Login\" button")]
     public AuthorizationPage ProceedToLoggingIn()
     {
         LoginButton.Click();

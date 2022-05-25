@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -24,49 +25,65 @@ public class ProjectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a new project")]
+    [AllureName("Create a new project with required data filled")]
+    [AllureStep("Send a \"create a new project\" request")]
     public void CreateProject_CreateRequest_ProjectIsCreated()
     {
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        creationProjectResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            creationProjectResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
     [Order(2)]
-    [AllureStep("Read the project")]
+    [AllureName("Read the project")]
+    [AllureStep("Send a \"read a project by code\" request")]
     public void UpdateProject_UpdateRequest_ProjectIsUpdated()
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getProjectResponse.Status.Should().BeTrue();
-        getProjectResponse.Result.Title.Should().Be(_projectToAdd.Title);
-        getProjectResponse.Result.Code.Should().Be(_onSiteProjectCodeAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getProjectResponse.Status.Should().BeTrue();
+            getProjectResponse.Result.Title.Should().Be(_projectToAdd.Title);
+            getProjectResponse.Result.Code.Should().Be(_onSiteProjectCodeAfterCreation);
+        }
     }
 
     [Test]
     [Order(3)]
-    [AllureStep("Delete the project")]
+    [AllureName("Delete the project")]
+    [AllureStep("Send a \"delete a project\" request")]
     public void DeleteProject_DeleteRequest_ProjectIsDeleted()
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        deleteProjectResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteProjectResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
     [Order(4)]
-    [AllureStep("Read all the remaining projects")]
+    [AllureName("Read all the remaining projects")]
+    [AllureStep("Send a \"get all projects\" request")]
     public void GetAllProjects_GetAllRequest_AllProjectsAreReturned()
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getAllProjectsResponse.Status.Should().BeTrue();
-        getAllProjectsResponse.Result.Entities.Should().NotContain(project => project.Title == _projectToAdd.Title);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getAllProjectsResponse.Status.Should().BeTrue();
+            getAllProjectsResponse.Result.Entities.Should().NotContain(project => project.Title == _projectToAdd.Title);
+        }
     }
 }
