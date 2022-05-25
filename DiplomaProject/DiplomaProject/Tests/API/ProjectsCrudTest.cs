@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -31,8 +32,11 @@ public class ProjectsCrudApiTest : BaseApiTest
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        creationProjectResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            creationProjectResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
@@ -43,10 +47,13 @@ public class ProjectsCrudApiTest : BaseApiTest
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getProjectResponse.Status.Should().BeTrue();
-        getProjectResponse.Result.Title.Should().Be(_projectToAdd.Title);
-        getProjectResponse.Result.Code.Should().Be(_onSiteProjectCodeAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getProjectResponse.Status.Should().BeTrue();
+            getProjectResponse.Result.Title.Should().Be(_projectToAdd.Title);
+            getProjectResponse.Result.Code.Should().Be(_onSiteProjectCodeAfterCreation);
+        }
     }
 
     [Test]
@@ -57,8 +64,11 @@ public class ProjectsCrudApiTest : BaseApiTest
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        deleteProjectResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteProjectResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
@@ -69,8 +79,11 @@ public class ProjectsCrudApiTest : BaseApiTest
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getAllProjectsResponse.Status.Should().BeTrue();
-        getAllProjectsResponse.Result.Entities.Should().NotContain(project => project.Title == _projectToAdd.Title);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getAllProjectsResponse.Status.Should().BeTrue();
+            getAllProjectsResponse.Result.Entities.Should().NotContain(project => project.Title == _projectToAdd.Title);
+        }
     }
 }

@@ -58,8 +58,11 @@ public class ProjectsCrudApiTest
             .PopulateProjectData(_projectToAdd)
             .SubmitProjectForm();
 
-        _projectPage.PageOpened.Should().BeTrue();
-        _projectPage.ProjectTitleText().Should().Be(_projectToAdd.Title);
+        using (new AssertionScope())
+        {
+            _projectPage.PageOpened.Should().BeTrue();
+            _projectPage.ProjectTitleText().Should().Be(_projectToAdd.Title);
+        }
     }
 
     [Test]
@@ -73,11 +76,13 @@ public class ProjectsCrudApiTest
             .PopulateUpdatedProjectData(_projectToUpdateWith)
             .SubmitProjectForm();
 
-        _projectSettingsPage.AlertDisplayed().Should().BeTrue();
-        _projectSettingsPage.AlertMessage().Should().Be("Project settings were successfully updated!");
-        _projectSettingsPage.UpdatedData().Title.Should().Be(_projectToUpdateWith.Title);
-        _projectSettingsPage.UpdatedData().Code.Should().Be(_projectToUpdateWith.Code);
-        _projectSettingsPage.UpdatedData().Description.Should().Be(_projectToUpdateWith.Description);
+        using (new AssertionScope())
+        {
+            _projectSettingsPage.AlertDisplayed().Should().BeTrue();
+            _projectSettingsPage.AlertMessage().Should().Be("Project settings were successfully updated!");
+            _projectSettingsPage.UpdatedData().Title.Should().Be(_projectToUpdateWith.Title);
+            _projectSettingsPage.UpdatedData().Code.Should().Be(_projectToUpdateWith.Code);
+        }
     }
 
     [Test]

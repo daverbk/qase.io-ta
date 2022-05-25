@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Configuration.Enums;
 using DiplomaProject.Services.ApiServices;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -52,8 +53,11 @@ public class AuthenticationApiTests : BaseApiTest
     {
         _projectServiceUserWithInvalidToken.GetAllProjects().Wait();
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        RestClientExtended.LastCallResponse.Content.Should().Contain("API token is invalid");
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            RestClientExtended.LastCallResponse.Content.Should().Contain("API token is invalid");
+        }
     }
 
     [Test]
@@ -65,7 +69,10 @@ public class AuthenticationApiTests : BaseApiTest
     {
         _projectServiceUnauthorizedUser.GetAllProjects().Wait();
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        RestClientExtended.LastCallResponse.Content.Should().Contain("API token not provided");
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            RestClientExtended.LastCallResponse.Content.Should().Contain("API token not provided");
+        }
     }
 }

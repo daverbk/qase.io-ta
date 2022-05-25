@@ -44,8 +44,11 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
             CaseService.CreateNewTestCase(_testCaseToAdd, _onSiteProjectCodeAfterCreation).Result;
         _onSiteTestCaseIdAfterCreation = testCaseCreationResponse.Result.Id;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        testCaseCreationResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            testCaseCreationResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
@@ -59,9 +62,12 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
         var updateTestCaseResponse =
             CaseService.UpdateTestCase(_testCaseToUpdateWith, _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        updateTestCaseResponse.Status.Should().BeTrue();
-        updateTestCaseResponse.Result.Id.Should().Be(_onSiteTestCaseIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            updateTestCaseResponse.Status.Should().BeTrue();
+            updateTestCaseResponse.Result.Id.Should().Be(_onSiteTestCaseIdAfterCreation);
+        }
     }
 
     [Test]
@@ -73,12 +79,12 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
         var getTestCaseResponse = CaseService
             .GetSpecificTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getTestCaseResponse.Status.Should().BeTrue();
-        getTestCaseResponse.Result.Title.Should().Be(_testCaseToUpdateWith.Title);
-        getTestCaseResponse.Result.Description.Should().Be(_testCaseToUpdateWith.Description);
-        getTestCaseResponse.Result.Preconditions.Should().Be(_testCaseToUpdateWith.Preconditions);
-        getTestCaseResponse.Result.Postconditions.Should().Be(_testCaseToUpdateWith.Postconditions);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getTestCaseResponse.Status.Should().BeTrue();
+            getTestCaseResponse.Result.Title.Should().Be(_testCaseToUpdateWith.Title);
+        }
     }
 
     [Test]
@@ -90,9 +96,12 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
         var deleteTestCaseResponse = CaseService
             .DeleteTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        deleteTestCaseResponse.Status.Should().BeTrue();
-        deleteTestCaseResponse.Result.Id.Should().Be(_onSiteTestCaseIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteTestCaseResponse.Status.Should().BeTrue();
+            deleteTestCaseResponse.Result.Id.Should().Be(_onSiteTestCaseIdAfterCreation);
+        }
     }
 
     [Test]
@@ -103,9 +112,12 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     {
         var getAllTestCasesResponse = CaseService.GetAllTestCases(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getAllTestCasesResponse.Status.Should().BeTrue();
-        getAllTestCasesResponse.Result.Count.Should().Be(0);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getAllTestCasesResponse.Status.Should().BeTrue();
+            getAllTestCasesResponse.Result.Count.Should().Be(0);
+        }
     }
 
     [OneTimeTearDown]

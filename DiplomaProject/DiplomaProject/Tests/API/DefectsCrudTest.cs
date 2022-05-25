@@ -4,6 +4,7 @@ using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
 using DiplomaProject.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -43,8 +44,11 @@ public class DefectsCrudApiTest : BaseApiTest
             DefectService.CreateNewDefect(_defectToAdd, _onSiteProjectCodeAfterCreation).Result;
         _onSiteDefectIdAfterCreation = defectCreationResponse.Result.Id;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        defectCreationResponse.Status.Should().BeTrue();
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            defectCreationResponse.Status.Should().BeTrue();
+        }
     }
 
     [Test]
@@ -58,9 +62,12 @@ public class DefectsCrudApiTest : BaseApiTest
         var updateDefectResponse =
             DefectService.UpdateDefect(_defectToUpdateWith, _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        updateDefectResponse.Status.Should().BeTrue();
-        updateDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            updateDefectResponse.Status.Should().BeTrue();
+            updateDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        }
     }
 
     [Test]
@@ -72,10 +79,13 @@ public class DefectsCrudApiTest : BaseApiTest
         var getDefectResponse = DefectService
             .GetSpecificDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getDefectResponse.Status.Should().BeTrue();
-        getDefectResponse.Result.Title.Should().Be(_defectToUpdateWith.Title);
-        getDefectResponse.Result.ActualResult.Should().Be(_defectToUpdateWith.ActualResult);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getDefectResponse.Status.Should().BeTrue();
+            getDefectResponse.Result.Title.Should().Be(_defectToUpdateWith.Title);
+            getDefectResponse.Result.ActualResult.Should().Be(_defectToUpdateWith.ActualResult);
+        }
     }
 
     [Test]
@@ -87,9 +97,12 @@ public class DefectsCrudApiTest : BaseApiTest
         var deleteDefectResponse = DefectService
             .DeleteDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        deleteDefectResponse.Status.Should().BeTrue();
-        deleteDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            deleteDefectResponse.Status.Should().BeTrue();
+            deleteDefectResponse.Result.Id.Should().Be(_onSiteDefectIdAfterCreation);
+        }
     }
 
     [Test]
@@ -100,9 +113,12 @@ public class DefectsCrudApiTest : BaseApiTest
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
 
-        RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        getAllDefectsResponse.Status.Should().BeTrue();
-        getAllDefectsResponse.Result.Count.Should().Be(0);
+        using (new AssertionScope())
+        {
+            RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            getAllDefectsResponse.Status.Should().BeTrue();
+            getAllDefectsResponse.Result.Count.Should().Be(0);
+        }
     }
 
     [OneTimeTearDown]
