@@ -14,6 +14,7 @@ public class LoginStep
         _welcomingPage = new WelcomingPage(_webDriver);
     }
 
+    [AllureStep("Log in with {0} and {1}")]
     public ProjectsPage LogIn(string email, string password)
     {
         _welcomingPage

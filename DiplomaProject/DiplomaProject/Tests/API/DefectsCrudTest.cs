@@ -35,7 +35,8 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a new defect")]
+    [AllureName("Create a new defect with required data filled")]
+    [AllureStep("Send a \"create a new defect\" request")]
     public void CreateDefect_CreateRequest_DefectIsCreated()
     {
         var defectCreationResponse =
@@ -48,7 +49,8 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(2)]
-    [AllureStep("Update the defect")]
+    [AllureName("Update the defect with required data filled")]
+    [AllureStep("Send a \"update a defect\" request")]
     public void UpdateDefect_UpdateRequest_DefectIsUpdated()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
@@ -63,7 +65,8 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(3)]
-    [AllureStep("Read the defect")]
+    [AllureName("Read the defect")]
+    [AllureStep("Send a \"get a defect by id\" request")]
     public void GetDefect_GetRequest_DefectIsReturned()
     {
         var getDefectResponse = DefectService
@@ -77,7 +80,8 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(4)]
-    [AllureStep("Delete the defect")]
+    [AllureName("Delete the defect")]
+    [AllureStep("Send a \"delete a defect\" request")]
     public void DeleteDefect_DeleteRequest_DefectIsDeleted()
     {
         var deleteDefectResponse = DefectService
@@ -90,7 +94,8 @@ public class DefectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(5)]
-    [AllureStep("Read all the remaining defects")]
+    [AllureName("Read all the remaining defects")]
+    [AllureStep("Send a \"get all defects\" request")]
     public void GetAllDefects_GetAllRequest_AllDefectsAreReturned()
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;

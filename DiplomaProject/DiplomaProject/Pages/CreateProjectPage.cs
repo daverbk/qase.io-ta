@@ -1,4 +1,5 @@
 using DiplomaProject.Models;
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -22,6 +23,7 @@ public class CreateProjectPage : BasePage
     {
     }
 
+    [AllureStep("Populate project data")]
     public CreateProjectPage PopulateProjectData(Project projectToAdd)
     {
         TitleInput.SendKeys(projectToAdd.Title);
@@ -31,6 +33,7 @@ public class CreateProjectPage : BasePage
         return this;
     }
 
+    [AllureStep("Submit project form")]
     public void SubmitProjectForm()
     {
         CreateProjectButton.Click();

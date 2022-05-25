@@ -24,7 +24,8 @@ public class ProjectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a new project")]
+    [AllureName("Create a new project with required data filled")]
+    [AllureStep("Send a \"create a new project\" request")]
     public void CreateProject_CreateRequest_ProjectIsCreated()
     {
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
@@ -36,7 +37,8 @@ public class ProjectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(2)]
-    [AllureStep("Read the project")]
+    [AllureName("Read the project")]
+    [AllureStep("Send a \"read a project by code\" request")]
     public void UpdateProject_UpdateRequest_ProjectIsUpdated()
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -49,7 +51,8 @@ public class ProjectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(3)]
-    [AllureStep("Delete the project")]
+    [AllureName("Delete the project")]
+    [AllureStep("Send a \"delete a project\" request")]
     public void DeleteProject_DeleteRequest_ProjectIsDeleted()
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -60,7 +63,8 @@ public class ProjectsCrudApiTest : BaseApiTest
 
     [Test]
     [Order(4)]
-    [AllureStep("Read all the remaining projects")]
+    [AllureName("Read all the remaining projects")]
+    [AllureStep("Send a \"get all projects\" request")]
     public void GetAllProjects_GetAllRequest_AllProjectsAreReturned()
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;

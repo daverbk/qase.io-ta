@@ -6,6 +6,7 @@ using DiplomaProject.Pages;
 using DiplomaProject.Services.SeleniumServices;
 using DiplomaProject.Steps;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -47,7 +48,7 @@ public class ProjectsCrudApiTest
 
     [Test]
     [Order(1)]
-    [AllureStep("Create a project")]
+    [AllureName("Create a project with requited fields filled")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=11")]
     public void CreateProject_PopulateProjectForm_ProjectIsCreated()
     {
@@ -63,7 +64,7 @@ public class ProjectsCrudApiTest
 
     [Test]
     [Order(2)]
-    [AllureStep("Update the project")]
+    [AllureName("Update the project with required fields filled")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=12")]
     public void UpdateProject_PopulateUpdateProjectForm_ProjectIsUpdated()
     {
@@ -81,7 +82,7 @@ public class ProjectsCrudApiTest
 
     [Test]
     [Order(3)]
-    [AllureStep("Delete the updated project")]
+    [AllureName("Delete the updated project")]
     [AllureTms("tms", "suite=6&previewMode=modal&case=13")]
     public void DeleteProject_ConfirmDeletion_ProjectIsDeleted()
     {

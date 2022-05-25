@@ -33,7 +33,8 @@ public class AuthenticationApiTests : BaseApiTest
 
     [Test]
     [Category("Positive")]
-    [AllureStep("Authenticate using valid data")]
+    [AllureName("Authentication using valid data")]
+    [AllureStep("Send \"get all projects\" request from a validly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_ValidToken_SuccessfulAuthentication()
     {
@@ -44,7 +45,8 @@ public class AuthenticationApiTests : BaseApiTest
 
     [Test]
     [Category("Negative")]
-    [AllureStep("Authenticate using invalid data")]
+    [AllureName("Authentication using invalid data")]
+    [AllureStep("Send \"get all projects\" request from an invalidly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_InvalidToken_Unauthorized()
     {
@@ -56,7 +58,8 @@ public class AuthenticationApiTests : BaseApiTest
 
     [Test]
     [Category("Negative")]
-    [AllureStep("Authenticate using no authentication set in client")]
+    [AllureName("Authentication using no authentication set in client")]
+    [AllureStep("Send \"get all projects\" request from an unauthorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
     public void Authentication_NoToken_Unauthorized()
     {

@@ -1,4 +1,5 @@
 using DiplomaProject.Wrappers;
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -16,6 +17,7 @@ public class ProjectsPage : BasePage
     {
     }
 
+    [AllureStep("Click \"Create new project\" button")]
     public CreateProjectPage ClickCreateNewProjectButton()
     {
         CreateProjectButton.Click();

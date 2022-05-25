@@ -1,4 +1,5 @@
 using DiplomaProject.Models;
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -27,7 +28,8 @@ public class ProjectSettingsPage : BasePage
     public ProjectSettingsPage(IWebDriver driver) : base(driver)
     {
     }
-
+    
+    [AllureStep("Populate updated project data")]
     public ProjectSettingsPage PopulateUpdatedProjectData(Project projectToUpdateWith)
     {
         TitleInput.Clear();
@@ -42,6 +44,7 @@ public class ProjectSettingsPage : BasePage
         return this;
     }
 
+    [AllureStep("Submit updated project form")]
     public void SubmitProjectForm()
     {
         UpdateSettingsButton.Click();
@@ -67,6 +70,7 @@ public class ProjectSettingsPage : BasePage
         };
     }
 
+    [AllureStep("Click the delete option")]
     public DeleteProjectPage DeleteProject()
     {
         DeleteProjectButton.Click();

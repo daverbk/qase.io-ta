@@ -1,3 +1,4 @@
+using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Pages;
@@ -15,6 +16,7 @@ public class ProjectPage : BasePage
     {
     }
 
+    [AllureStep("Click \"settings\" section")]
     public ProjectSettingsPage NavigateToSettings()
     {
         SettingsButton.Click();
