@@ -20,7 +20,7 @@ namespace DiplomaProject.Tests.UI;
 [AllureEpic("Projects-UI")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-UI")]
-public class ProjectsCrudApiTest
+public class ProjectsCrudUiTest
 {
     private IWebDriver _webDriver = null!;
 
@@ -95,7 +95,7 @@ public class ProjectsCrudApiTest
             .DeleteProject()
             .ConfirmDeletion();
 
-        _projectsPage.ProjectExistsInProjectsTable(_projectToUpdateWith.Title).Should().BeFalse();
+        _projectsPage.ProjectExistsInTable(_projectToUpdateWith.Title).Should().BeFalse();
     }
 
     [OneTimeTearDown]

@@ -14,7 +14,7 @@ public class BaseApiTest
     protected DefectService DefectService { get; private set; } = null!;
 
     [OneTimeSetUp]
-    public void SetUpApi()
+    public void SetUpClient()
     {
         var adminClient = new RestClientExtended(UserType.Admin);
 

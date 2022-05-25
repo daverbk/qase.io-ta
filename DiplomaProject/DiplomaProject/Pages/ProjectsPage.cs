@@ -11,7 +11,7 @@ public class ProjectsPage : BasePage
 
     private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
 
-    private static Table ProjectsTable => new Table(Driver, ProjectsTableLocator);
+    private static Table ProjectsTable => new(Driver, ProjectsTableLocator);
 
     public ProjectsPage(IWebDriver driver) : base(driver)
     {
@@ -25,7 +25,7 @@ public class ProjectsPage : BasePage
         return new CreateProjectPage(Driver);
     }
 
-    public bool ProjectExistsInProjectsTable(string projectName)
+    public bool ProjectExistsInTable(string projectName)
     {
         return ProjectsTable.ProjectExists(projectName);
     }
