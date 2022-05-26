@@ -44,13 +44,6 @@ namespace DiplomaProject.Configuration
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json");
 
-            var appSettingFiles = Directory.EnumerateFiles(basePath ?? string.Empty, "appsettings.*.json");
-
-            foreach (var appSettingFile in appSettingFiles)
-            {
-                builder.AddJsonFile(appSettingFile);
-            }
-
             return builder.Build();
         }
 
