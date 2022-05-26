@@ -2,6 +2,7 @@ using Allure.Commons;
 using DiplomaProject.Configuration;
 using DiplomaProject.Pages;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using NUnit.Framework;
@@ -57,7 +58,11 @@ public class AuthorizationTests : BaseUiTest
             .PopulateAuthorizationData(invalidEmail, invalidPassword)
             .SubmitAuthorizationForm();
 
-        _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+        using (new AssertionScope())
+        {
+            _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+            _authorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");
+        }
     }
 
     [Test]
@@ -74,6 +79,10 @@ public class AuthorizationTests : BaseUiTest
             .PopulateAuthorizationData(Configurator.Admin.Email, sqlInjections)
             .SubmitAuthorizationForm();
 
-        _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+        using (new AssertionScope())
+        {
+            _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+            _authorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");  
+        }
     }
 }
