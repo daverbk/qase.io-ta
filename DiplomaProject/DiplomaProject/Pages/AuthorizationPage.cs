@@ -41,6 +41,11 @@ public class AuthorizationPage : BasePage
     {
         return AuthorizationErrorMessage.Displayed;
     }
+    
+    public string ErrorMessageText()
+    {
+        return AuthorizationErrorMessage.Text.Normalize();
+    }
 
     protected override By GetPageIdentifier()
     {
