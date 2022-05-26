@@ -20,11 +20,6 @@ namespace DiplomaProject.Configuration
             throw new NullReferenceException(
                 "Users array in appsettings.json is empty. Fill it before the next restart.");
 
-        public static User User =>
-            _users.Find(user => user.UserType == UserType.User) ??
-            throw new NullReferenceException(
-                "Users array in appsettings.json is empty. Fill it before the next restart.");
-        
         public static AppSettings AppSettings =>
             _appSettings ??
             throw new NullReferenceException(
@@ -43,13 +38,6 @@ namespace DiplomaProject.Configuration
             var builder = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json");
-
-            var appSettingFiles = Directory.EnumerateFiles(basePath ?? string.Empty, "appsettings.*.json");
-
-            foreach (var appSettingFile in appSettingFiles)
-            {
-                builder.AddJsonFile(appSettingFile);
-            }
 
             return builder.Build();
         }
@@ -71,7 +59,6 @@ namespace DiplomaProject.Configuration
                 user.UserType = usersArrayMember["UserType"].ToLower() switch
                 {
                     "admin" => UserType.Admin,
-                    "user" => UserType.User,
                     _ => user.UserType
                 };
 
