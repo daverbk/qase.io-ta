@@ -17,7 +17,6 @@ namespace DiplomaProject.Tests.API;
 [AllureEpic("Test cases-API")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
-[AllureTms("tms", "suite=13&case=24&previewMode=modal")]
 public class ApiTestCasesCrudApiTest : BaseApiTest
 {
     private readonly Project _projectToAdd = new ProjectFaker().Generate();
@@ -38,6 +37,7 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [Order(1)]
     [AllureName("Create a test case with required data filled")]
     [AllureStep("Send a \"create a test case\" request")]
+    [AllureTms("tms", "suite=13&previewMode=side&case=38")]
     public void CreateTestCase_CreateRequest_TestCaseIsCreated()
     {
         var testCaseCreationResponse =
@@ -55,6 +55,7 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [Order(2)]
     [AllureName("Update the test case with required data filled")]
     [AllureStep("Send a \"update a test case\" request")]
+    [AllureTms("tms", "suite=13&previewMode=side&case=39")]
     public void UpdateTestCase_UpdateRequest_TestCaseIsUpdated()
     {
         _testCaseToUpdateWith.Id = _onSiteTestCaseIdAfterCreation;
@@ -74,6 +75,7 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [Order(3)]
     [AllureName("Read the test case")]
     [AllureStep("Send a \"get a test case by id\" request")]
+    [AllureTms("tms", "suite=13&previewMode=side&case=40")]
     public void GetTestCase_GetRequest_TestCaseIsReturned()
     {
         var getTestCaseResponse = CaseService
@@ -91,6 +93,7 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [Order(4)]
     [AllureName("Delete the test case")]
     [AllureStep("Send a \"delete a test case\" request")]
+    [AllureTms("tms", "suite=13&previewMode=side&case=41")]
     public void DeleteTestCase_DeleteRequest_TestCaseIsDeleted()
     {
         var deleteTestCaseResponse = CaseService
@@ -108,6 +111,7 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [Order(5)]
     [AllureName("Read the remaining test cases")]
     [AllureStep("Send a \"get all test cases\" request")]
+    [AllureTms("tms", "suite=13&previewMode=side&case=42")]
     public void GetAllTestCases_GetAllRequest_AllTestCasesAreReturned()
     {
         var getAllTestCasesResponse = CaseService.GetAllTestCases(_onSiteProjectCodeAfterCreation).Result;

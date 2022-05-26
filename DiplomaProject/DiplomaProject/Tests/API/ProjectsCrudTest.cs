@@ -17,7 +17,6 @@ namespace DiplomaProject.Tests.API;
 [AllureEpic("Projects-API")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
-[AllureTms("tms", "suite=11&case=23&previewMode=modal")]
 public class ProjectsCrudApiTest : BaseApiTest
 {
     private readonly Project _projectToAdd = new ProjectFaker().Generate();
@@ -27,6 +26,7 @@ public class ProjectsCrudApiTest : BaseApiTest
     [Order(1)]
     [AllureName("Create a new project with required data filled")]
     [AllureStep("Send a \"create a new project\" request")]
+    [AllureTms("tms", "suite=11&previewMode=side&case=29")]
     public void CreateProject_CreateRequest_ProjectIsCreated()
     {
         var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
@@ -43,6 +43,7 @@ public class ProjectsCrudApiTest : BaseApiTest
     [Order(2)]
     [AllureName("Read the project")]
     [AllureStep("Send a \"read a project by code\" request")]
+    [AllureTms("tms", "suite=11&previewMode=side&case=30")]
     public void UpdateProject_UpdateRequest_ProjectIsUpdated()
     {
         var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -60,6 +61,7 @@ public class ProjectsCrudApiTest : BaseApiTest
     [Order(3)]
     [AllureName("Delete the project")]
     [AllureStep("Send a \"delete a project\" request")]
+    [AllureTms("tms", "suite=11&previewMode=side&case=31")]
     public void DeleteProject_DeleteRequest_ProjectIsDeleted()
     {
         var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
@@ -75,6 +77,7 @@ public class ProjectsCrudApiTest : BaseApiTest
     [Order(4)]
     [AllureName("Read all the remaining projects")]
     [AllureStep("Send a \"get all projects\" request")]
+    [AllureTms("tms", "suite=11&previewMode=side&case=32")]
     public void GetAllProjects_GetAllRequest_AllProjectsAreReturned()
     {
         var getAllProjectsResponse = ProjectService.GetAllProjects().Result;

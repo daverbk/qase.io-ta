@@ -17,7 +17,6 @@ namespace DiplomaProject.Tests.API;
 [AllureEpic("Defects-API")]
 [AllureSeverity(SeverityLevel.critical)]
 [Category("CRUD-API")]
-[AllureTms("tms", "suite=12&previewMode=modal&case=25")]
 public class DefectsCrudApiTest : BaseApiTest
 {
     private readonly Project _projectToAdd = new ProjectFaker().Generate();
@@ -38,6 +37,7 @@ public class DefectsCrudApiTest : BaseApiTest
     [Order(1)]
     [AllureName("Create a new defect with required data filled")]
     [AllureStep("Send a \"create a new defect\" request")]
+    [AllureTms("tms", "suite=12&previewMode=side&case=33")]
     public void CreateDefect_CreateRequest_DefectIsCreated()
     {
         var defectCreationResponse =
@@ -55,6 +55,7 @@ public class DefectsCrudApiTest : BaseApiTest
     [Order(2)]
     [AllureName("Update the defect with required data filled")]
     [AllureStep("Send a \"update a defect\" request")]
+    [AllureTms("tms", "suite=12&previewMode=side&case=34")]
     public void UpdateDefect_UpdateRequest_DefectIsUpdated()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
@@ -74,6 +75,7 @@ public class DefectsCrudApiTest : BaseApiTest
     [Order(3)]
     [AllureName("Read the defect")]
     [AllureStep("Send a \"get a defect by id\" request")]
+    [AllureTms("tms", "suite=12&previewMode=side&case=35")]
     public void GetDefect_GetRequest_DefectIsReturned()
     {
         var getDefectResponse = DefectService
@@ -92,6 +94,7 @@ public class DefectsCrudApiTest : BaseApiTest
     [Order(4)]
     [AllureName("Delete the defect")]
     [AllureStep("Send a \"delete a defect\" request")]
+    [AllureTms("tms", "suite=12&previewMode=side&case=36")]
     public void DeleteDefect_DeleteRequest_DefectIsDeleted()
     {
         var deleteDefectResponse = DefectService
@@ -109,6 +112,7 @@ public class DefectsCrudApiTest : BaseApiTest
     [Order(5)]
     [AllureName("Read all the remaining defects")]
     [AllureStep("Send a \"get all defects\" request")]
+    [AllureTms("tms", "suite=12&previewMode=side&case=37")]
     public void GetAllDefects_GetAllRequest_AllDefectsAreReturned()
     {
         var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
