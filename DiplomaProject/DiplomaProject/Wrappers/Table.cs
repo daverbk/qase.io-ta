@@ -8,8 +8,6 @@ namespace DiplomaProject.Wrappers
     {
         private readonly BaseElementWrapper _baseElementWrapper;
 
-        public bool Displayed => _baseElementWrapper.Displayed;
-
         private ReadOnlyCollection<IWebElement> Headers => _baseElementWrapper.FindElements(By.CssSelector("thead th"));
 
         private ReadOnlyCollection<IWebElement> Rows => _baseElementWrapper.FindElements(By.CssSelector("tbody tr"));

@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
@@ -27,9 +28,9 @@ public class DefectsCrudApiTest : BaseApiTest
     private long _onSiteDefectIdAfterCreation;
 
     [OneTimeSetUp]
-    public void PreconditionCreateProject()
+    public async Task PreconditionCreateProject()
     {
-        var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
+        var creationProjectResponse = await ProjectService.CreateNewProject(_projectToAdd);
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
     }
 
@@ -38,10 +39,9 @@ public class DefectsCrudApiTest : BaseApiTest
     [AllureName("Create a new defect with required data filled")]
     [AllureStep("Send a \"create a new defect\" request")]
     [AllureTms("tms", "suite=12&previewMode=side&case=33")]
-    public void CreateDefect_CreateRequest_DefectIsCreated()
+    public async Task CreateDefect_CreateRequest_DefectIsCreated()
     {
-        var defectCreationResponse =
-            DefectService.CreateNewDefect(_defectToAdd, _onSiteProjectCodeAfterCreation).Result;
+        var defectCreationResponse = await DefectService.CreateNewDefect(_defectToAdd, _onSiteProjectCodeAfterCreation);
         _onSiteDefectIdAfterCreation = defectCreationResponse.Result.Id;
 
         using (new AssertionScope())
@@ -56,12 +56,11 @@ public class DefectsCrudApiTest : BaseApiTest
     [AllureName("Update the defect with required data filled")]
     [AllureStep("Send a \"update a defect\" request")]
     [AllureTms("tms", "suite=12&previewMode=side&case=34")]
-    public void UpdateDefect_UpdateRequest_DefectIsUpdated()
+    public async Task UpdateDefect_UpdateRequest_DefectIsUpdated()
     {
         _defectToUpdateWith.Id = _onSiteDefectIdAfterCreation;
 
-        var updateDefectResponse =
-            DefectService.UpdateDefect(_defectToUpdateWith, _onSiteProjectCodeAfterCreation).Result;
+        var updateDefectResponse = await DefectService.UpdateDefect(_defectToUpdateWith, _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -76,10 +75,10 @@ public class DefectsCrudApiTest : BaseApiTest
     [AllureName("Read the defect")]
     [AllureStep("Send a \"get a defect by id\" request")]
     [AllureTms("tms", "suite=12&previewMode=side&case=35")]
-    public void GetDefect_GetRequest_DefectIsReturned()
+    public async Task GetDefect_GetRequest_DefectIsReturned()
     {
-        var getDefectResponse = DefectService
-            .GetSpecificDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
+        var getDefectResponse = await DefectService
+            .GetSpecificDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -95,10 +94,10 @@ public class DefectsCrudApiTest : BaseApiTest
     [AllureName("Delete the defect")]
     [AllureStep("Send a \"delete a defect\" request")]
     [AllureTms("tms", "suite=12&previewMode=side&case=36")]
-    public void DeleteDefect_DeleteRequest_DefectIsDeleted()
+    public async Task DeleteDefect_DeleteRequest_DefectIsDeleted()
     {
-        var deleteDefectResponse = DefectService
-            .DeleteDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
+        var deleteDefectResponse = await DefectService
+            .DeleteDefect(_onSiteDefectIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -113,9 +112,9 @@ public class DefectsCrudApiTest : BaseApiTest
     [AllureName("Read all the remaining defects")]
     [AllureStep("Send a \"get all defects\" request")]
     [AllureTms("tms", "suite=12&previewMode=side&case=37")]
-    public void GetAllDefects_GetAllRequest_AllDefectsAreReturned()
+    public async Task GetAllDefects_GetAllRequest_AllDefectsAreReturned()
     {
-        var getAllDefectsResponse = DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation).Result;
+        var getAllDefectsResponse = await DefectService.GetAllDefects(_onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -126,8 +125,8 @@ public class DefectsCrudApiTest : BaseApiTest
     }
 
     [OneTimeTearDown]
-    public void PostconditionDeleteProject()
+    public async Task PostconditionDeleteProject()
     {
-        ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Wait();
+        await ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation);
     }
 }

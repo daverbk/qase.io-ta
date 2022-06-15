@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
@@ -27,9 +28,9 @@ public class ProjectsCrudApiTest : BaseApiTest
     [AllureName("Create a new project with required data filled")]
     [AllureStep("Send a \"create a new project\" request")]
     [AllureTms("tms", "suite=11&previewMode=side&case=29")]
-    public void CreateProject_CreateRequest_ProjectIsCreated()
+    public async Task CreateProject_CreateRequest_ProjectIsCreated()
     {
-        var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
+        var creationProjectResponse = await ProjectService.CreateNewProject(_projectToAdd);
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
 
         using (new AssertionScope())
@@ -44,9 +45,9 @@ public class ProjectsCrudApiTest : BaseApiTest
     [AllureName("Read the project")]
     [AllureStep("Send a \"read a project by code\" request")]
     [AllureTms("tms", "suite=11&previewMode=side&case=30")]
-    public void UpdateProject_UpdateRequest_ProjectIsUpdated()
+    public async Task UpdateProject_UpdateRequest_ProjectIsUpdated()
     {
-        var getProjectResponse = ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation).Result;
+        var getProjectResponse = await ProjectService.GetProjectByCode(_onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -62,9 +63,9 @@ public class ProjectsCrudApiTest : BaseApiTest
     [AllureName("Delete the project")]
     [AllureStep("Send a \"delete a project\" request")]
     [AllureTms("tms", "suite=11&previewMode=side&case=31")]
-    public void DeleteProject_DeleteRequest_ProjectIsDeleted()
+    public async Task DeleteProject_DeleteRequest_ProjectIsDeleted()
     {
-        var deleteProjectResponse = ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Result;
+        var deleteProjectResponse = await ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -78,9 +79,9 @@ public class ProjectsCrudApiTest : BaseApiTest
     [AllureName("Read all the remaining projects")]
     [AllureStep("Send a \"get all projects\" request")]
     [AllureTms("tms", "suite=11&previewMode=side&case=32")]
-    public void GetAllProjects_GetAllRequest_AllProjectsAreReturned()
+    public async Task GetAllProjects_GetAllRequest_AllProjectsAreReturned()
     {
-        var getAllProjectsResponse = ProjectService.GetAllProjects().Result;
+        var getAllProjectsResponse = await ProjectService.GetAllProjects();
 
         using (new AssertionScope())
         {
