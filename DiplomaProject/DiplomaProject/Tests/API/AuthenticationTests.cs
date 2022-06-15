@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Configuration.Enums;
@@ -37,9 +38,9 @@ public class AuthenticationApiTests : BaseApiTest
     [AllureName("Authentication using valid data")]
     [AllureStep("Send \"get all projects\" request from a validly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
-    public void Authentication_ValidToken_SuccessfulAuthentication()
+    public async Task Authentication_ValidToken_SuccessfulAuthentication()
     {
-        ProjectService.GetAllProjects().Wait();
+        await ProjectService.GetAllProjects();
 
         RestClientExtended.LastCallResponse.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -49,9 +50,9 @@ public class AuthenticationApiTests : BaseApiTest
     [AllureName("Authentication using invalid data")]
     [AllureStep("Send \"get all projects\" request from an invalidly authorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
-    public void Authentication_InvalidToken_Unauthorized()
+    public async Task Authentication_InvalidToken_Unauthorized()
     {
-        _projectServiceUserWithInvalidToken.GetAllProjects().Wait();
+        await _projectServiceUserWithInvalidToken.GetAllProjects();
 
         using (new AssertionScope())
         {
@@ -65,9 +66,9 @@ public class AuthenticationApiTests : BaseApiTest
     [AllureName("Authentication using no authentication set in client")]
     [AllureStep("Send \"get all projects\" request from an unauthorized user")]
     [AllureTms("tms", "suite=15&previewMode=modal&case=26")]
-    public void Authentication_NoToken_Unauthorized()
+    public async Task Authentication_NoToken_Unauthorized()
     {
-        _projectServiceUnauthorizedUser.GetAllProjects().Wait();
+        await _projectServiceUnauthorizedUser.GetAllProjects();
 
         using (new AssertionScope())
         {

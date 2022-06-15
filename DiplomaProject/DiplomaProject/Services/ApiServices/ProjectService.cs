@@ -15,35 +15,35 @@ public class ProjectService : IProjectService, IDisposable
         _restClient = restClient;
     }
 
-    public Task<Response<Project>> CreateNewProject(Project project)
+    public async Task<Response<Project>> CreateNewProject(Project project)
     {
         var request = new RestRequest("/v1/project", Method.Post)
             .AddJsonBody(project);
 
-        return _restClient.ExecuteAsync<Response<Project>>(request);
+        return await _restClient.ExecuteAsync<Response<Project>>(request);
     }
 
-    public Task<Response<Project>> GetProjectByCode(string projectCode)
+    public async Task<Response<Project>> GetProjectByCode(string projectCode)
     {
         var request = new RestRequest("/v1/project/{code}")
             .AddUrlSegment("code", projectCode);
 
-        return _restClient.ExecuteAsync<Response<Project>>(request);
+        return await _restClient.ExecuteAsync<Response<Project>>(request);
     }
 
-    public Task<Response<GroupSelection<Project>>> GetAllProjects()
+    public async Task<Response<GroupSelection<Project>>> GetAllProjects()
     {
         var request = new RestRequest("/v1/project");
 
-        return _restClient.ExecuteAsync<Response<GroupSelection<Project>>>(request);
+        return await _restClient.ExecuteAsync<Response<GroupSelection<Project>>>(request);
     }
 
-    public Task<Response<Project>> DeleteProjectByCode(string projectCode)
+    public async Task<Response<Project>> DeleteProjectByCode(string projectCode)
     {
         var request = new RestRequest("/v1/project/{code}", Method.Delete)
             .AddUrlSegment("code", projectCode);
 
-        return _restClient.ExecuteAsync<Response<Project>>(request);
+        return await _restClient.ExecuteAsync<Response<Project>>(request);
     }
 
     public void Dispose()

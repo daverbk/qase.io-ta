@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using Allure.Commons;
 using DiplomaProject.Clients;
 using DiplomaProject.Fakers;
@@ -27,9 +28,9 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     private long _onSiteTestCaseIdAfterCreation;
 
     [OneTimeSetUp]
-    public void PreconditionCreateProject()
+    public async Task PreconditionCreateProject()
     {
-        var creationProjectResponse = ProjectService.CreateNewProject(_projectToAdd).Result;
+        var creationProjectResponse = await ProjectService.CreateNewProject(_projectToAdd);
         _onSiteProjectCodeAfterCreation = creationProjectResponse.Result.Code;
     }
 
@@ -38,10 +39,10 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [AllureName("Create a test case with required data filled")]
     [AllureStep("Send a \"create a test case\" request")]
     [AllureTms("tms", "suite=13&previewMode=side&case=38")]
-    public void CreateTestCase_CreateRequest_TestCaseIsCreated()
+    public async Task CreateTestCase_CreateRequest_TestCaseIsCreated()
     {
-        var testCaseCreationResponse =
-            CaseService.CreateNewTestCase(_testCaseToAdd, _onSiteProjectCodeAfterCreation).Result;
+        var testCaseCreationResponse = await CaseService
+            .CreateNewTestCase(_testCaseToAdd, _onSiteProjectCodeAfterCreation);
         _onSiteTestCaseIdAfterCreation = testCaseCreationResponse.Result.Id;
 
         using (new AssertionScope())
@@ -56,12 +57,12 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [AllureName("Update the test case with required data filled")]
     [AllureStep("Send a \"update a test case\" request")]
     [AllureTms("tms", "suite=13&previewMode=side&case=39")]
-    public void UpdateTestCase_UpdateRequest_TestCaseIsUpdated()
+    public async Task UpdateTestCase_UpdateRequest_TestCaseIsUpdated()
     {
         _testCaseToUpdateWith.Id = _onSiteTestCaseIdAfterCreation;
 
-        var updateTestCaseResponse =
-            CaseService.UpdateTestCase(_testCaseToUpdateWith, _onSiteProjectCodeAfterCreation).Result;
+        var updateTestCaseResponse = await 
+            CaseService.UpdateTestCase(_testCaseToUpdateWith, _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -76,10 +77,10 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [AllureName("Read the test case")]
     [AllureStep("Send a \"get a test case by id\" request")]
     [AllureTms("tms", "suite=13&previewMode=side&case=40")]
-    public void GetTestCase_GetRequest_TestCaseIsReturned()
+    public async Task GetTestCase_GetRequest_TestCaseIsReturned()
     {
-        var getTestCaseResponse = CaseService
-            .GetSpecificTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
+        var getTestCaseResponse = await CaseService
+            .GetSpecificTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -94,10 +95,10 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [AllureName("Delete the test case")]
     [AllureStep("Send a \"delete a test case\" request")]
     [AllureTms("tms", "suite=13&previewMode=side&case=41")]
-    public void DeleteTestCase_DeleteRequest_TestCaseIsDeleted()
+    public async Task DeleteTestCase_DeleteRequest_TestCaseIsDeleted()
     {
-        var deleteTestCaseResponse = CaseService
-            .DeleteTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation).Result;
+        var deleteTestCaseResponse = await CaseService
+            .DeleteTestCase(_onSiteTestCaseIdAfterCreation.ToString(), _onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -112,9 +113,9 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     [AllureName("Read the remaining test cases")]
     [AllureStep("Send a \"get all test cases\" request")]
     [AllureTms("tms", "suite=13&previewMode=side&case=42")]
-    public void GetAllTestCases_GetAllRequest_AllTestCasesAreReturned()
+    public async Task GetAllTestCases_GetAllRequest_AllTestCasesAreReturned()
     {
-        var getAllTestCasesResponse = CaseService.GetAllTestCases(_onSiteProjectCodeAfterCreation).Result;
+        var getAllTestCasesResponse = await CaseService.GetAllTestCases(_onSiteProjectCodeAfterCreation);
 
         using (new AssertionScope())
         {
@@ -125,8 +126,8 @@ public class ApiTestCasesCrudApiTest : BaseApiTest
     }
 
     [OneTimeTearDown]
-    public void PostconditionDeleteProject()
+    public async Task PostconditionDeleteProject()
     {
-        ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation).Wait();
+        await ProjectService.DeleteProjectByCode(_onSiteProjectCodeAfterCreation);
     }
 }

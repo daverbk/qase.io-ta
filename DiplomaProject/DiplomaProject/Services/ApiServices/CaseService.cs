@@ -15,49 +15,49 @@ public class CaseService : ICaseService, IDisposable
         _restClient = restClient;
     }
 
-    public Task<Response<TestCase>> CreateNewTestCase(TestCase testCase, string projectCode)
+    public async Task<Response<TestCase>> CreateNewTestCase(TestCase testCase, string projectCode)
     {
         var request = new RestRequest("/v1/case/{code}", Method.Post)
             .AddUrlSegment("code", projectCode)
             .AddJsonBody(testCase);
 
-        return _restClient.ExecuteAsync<Response<TestCase>>(request);
+        return await _restClient.ExecuteAsync<Response<TestCase>>(request);
     }
 
-    public Task<Response<TestCase>> GetSpecificTestCase(string testCaseId, string projectCode)
+    public async Task<Response<TestCase>> GetSpecificTestCase(string testCaseId, string projectCode)
     {
         var request = new RestRequest("/v1/case/{code}/{id}")
             .AddUrlSegment("code", projectCode)
             .AddUrlSegment("id", testCaseId);
 
-        return _restClient.ExecuteAsync<Response<TestCase>>(request);
+        return await _restClient.ExecuteAsync<Response<TestCase>>(request);
     }
 
-    public Task<Response<GroupSelection<TestCase>>> GetAllTestCases(string projectCode)
+    public async Task<Response<GroupSelection<TestCase>>> GetAllTestCases(string projectCode)
     {
         var request = new RestRequest("/v1/case/{code}")
             .AddUrlSegment("code", projectCode);
 
-        return _restClient.ExecuteAsync<Response<GroupSelection<TestCase>>>(request);
+        return await _restClient.ExecuteAsync<Response<GroupSelection<TestCase>>>(request);
     }
 
-    public Task<Response<TestCase>> UpdateTestCase(TestCase testCase, string projectCode)
+    public async Task<Response<TestCase>> UpdateTestCase(TestCase testCase, string projectCode)
     {
         var request = new RestRequest("/v1/case/{code}/{id}", Method.Patch)
             .AddUrlSegment("code", projectCode)
             .AddUrlSegment("id", testCase.Id)
             .AddBody(testCase);
 
-        return _restClient.ExecuteAsync<Response<TestCase>>(request);
+        return await _restClient.ExecuteAsync<Response<TestCase>>(request);
     }
 
-    public Task<Response<TestCase>> DeleteTestCase(string testCaseId, string projectCode)
+    public async Task<Response<TestCase>> DeleteTestCase(string testCaseId, string projectCode)
     {
         var request = new RestRequest("/v1/case/{code}/{id}", Method.Delete)
             .AddUrlSegment("code", projectCode)
             .AddUrlSegment("id", testCaseId);
 
-        return _restClient.ExecuteAsync<Response<TestCase>>(request);
+        return await _restClient.ExecuteAsync<Response<TestCase>>(request);
     }
 
     public void Dispose()
