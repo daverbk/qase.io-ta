@@ -24,18 +24,18 @@ namespace DiplomaProject.Wrappers
 
         public bool Displayed => _webElement.Displayed;
 
-        public BaseElementWrapper(IWebDriver driver, By locator)
+        public BaseElementWrapper(By locator)
         {
-            _waitService = new WaitService(driver);
+            _waitService = new WaitService();
             _webElement = _waitService.WaitUntilElementExists(locator);
         }
 
-        public IWebElement FindElement(By @by)
+        public IWebElement FindElement(By by)
         {
             return _webElement.FindElement(by);
         }
 
-        public ReadOnlyCollection<IWebElement> FindElements(By @by)
+        public ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             return _webElement.FindElements(by);
         }

@@ -1,4 +1,6 @@
+using DiplomaProject.Configuration;
 using DiplomaProject.Models;
+using DiplomaProject.Services.SeleniumServices;
 using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
@@ -10,14 +12,20 @@ public class CreateProjectPage : BasePage
     private static readonly By CodeInputLocator = By.Id("inputCode");
     private static readonly By CreateProjectButtonLocator = By.CssSelector(".col button");
 
-    private IWebElement TitleInput => WaitService.WaitUntilElementExists(TitleInputLocator);
+    private static IWebElement TitleInput => new WaitService().WaitUntilElementExists(TitleInputLocator);
 
-    private IWebElement CodeInput => WaitService.WaitUntilElementExists(CodeInputLocator);
+    private static IWebElement CodeInput => new WaitService().WaitUntilElementExists(CodeInputLocator);
 
-    private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
+    private static IWebElement CreateProjectButton => new WaitService().WaitUntilElementExists(CreateProjectButtonLocator);
 
-    public CreateProjectPage(IWebDriver driver) : base(driver)
+    protected override void ExecuteLoad()
     {
+        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/project/create");
+    }
+
+    protected override bool EvaluateLoadedStatus()
+    {
+        return new WaitService().WaitUntilElementExists(CreateProjectButtonLocator).Displayed;
     }
 
     [AllureStep("Populate project data")]
@@ -26,17 +34,12 @@ public class CreateProjectPage : BasePage
         TitleInput.SendKeys(projectToAdd.Title);
         CodeInput.SendKeys(projectToAdd.Code);
 
-        return this;
+        return new CreateProjectPage();
     }
 
     [AllureStep("Submit project form")]
     public void SubmitProjectForm()
     {
         CreateProjectButton.Click();
-    }
-
-    protected override By GetPageIdentifier()
-    {
-        return CreateProjectButtonLocator;
     }
 }

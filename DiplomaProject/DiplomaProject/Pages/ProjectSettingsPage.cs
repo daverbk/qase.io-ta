@@ -1,4 +1,6 @@
+using DiplomaProject.Configuration;
 using DiplomaProject.Models;
+using DiplomaProject.Services.SeleniumServices;
 using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
@@ -9,23 +11,32 @@ public class ProjectSettingsPage : BasePage
     private static readonly By TitleInputLocator = By.Id("inputTitle");
     private static readonly By CodeInputLocator = By.Id("inputCode");
     private static readonly By UpdateSettingsButtonLocator = By.CssSelector(".col button");
-    private static readonly By AlertLocator = By.ClassName("alert-message");
+    private static readonly By AlertLocator = By.CssSelector("[role='alert']");
     private static readonly By DeleteProjectButtonLocator = By.ClassName("btn-cancel");
 
-    private IWebElement TitleInput => WaitService.WaitUntilElementExists(TitleInputLocator);
+    // DEVNOTE: Use ProjectName property to form correct url to access specific project's settings page.
+    public string ProjectName { private get; set; } = null!;
 
-    private IWebElement CodeInput => WaitService.WaitUntilElementExists(CodeInputLocator);
+    private static IWebElement TitleInput => new WaitService().WaitUntilElementExists(TitleInputLocator);
 
-    private IWebElement UpdateSettingsButton => WaitService.WaitUntilElementExists(UpdateSettingsButtonLocator);
+    private static IWebElement CodeInput => new WaitService().WaitUntilElementExists(CodeInputLocator);
 
-    private IWebElement Alert => WaitService.WaitQuickElement(AlertLocator);
+    private static IWebElement UpdateSettingsButton => new WaitService().WaitUntilElementExists(UpdateSettingsButtonLocator);
 
-    private IWebElement DeleteProjectButton => WaitService.WaitUntilElementExists(DeleteProjectButtonLocator);
+    private static IWebElement Alert => new WaitService().WaitQuickElement(AlertLocator);
 
-    public ProjectSettingsPage(IWebDriver driver) : base(driver)
+    private static IWebElement DeleteProjectButton => new WaitService().WaitUntilElementExists(DeleteProjectButtonLocator);
+
+    protected override void ExecuteLoad()
     {
+        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}/settings/general");
     }
-    
+
+    protected override bool EvaluateLoadedStatus()
+    {
+        return new WaitService().WaitUntilElementExists(UpdateSettingsButtonLocator).Displayed;
+    }
+
     [AllureStep("Populate updated project data")]
     public ProjectSettingsPage PopulateUpdatedProjectData(Project projectToUpdateWith)
     {
@@ -44,17 +55,17 @@ public class ProjectSettingsPage : BasePage
         UpdateSettingsButton.Click();
     }
 
-    public bool AlertDisplayed()
+    public static bool AlertDisplayed()
     {
         return Alert.Displayed;
     }
 
-    public string AlertMessage()
+    public static string AlertMessage()
     {
         return Alert.Text;
     }
 
-    public Project UpdatedData()
+    public static Project UpdatedData()
     {
         return new Project
         {
@@ -64,15 +75,10 @@ public class ProjectSettingsPage : BasePage
     }
 
     [AllureStep("Click the delete option")]
-    public DeleteProjectPage DeleteProject()
+    public static DeleteProjectPage DeleteProject()
     {
         DeleteProjectButton.Click();
 
-        return new DeleteProjectPage(Driver);
-    }
-
-    protected override By GetPageIdentifier()
-    {
-        return UpdateSettingsButtonLocator;
+        return new DeleteProjectPage();
     }
 }

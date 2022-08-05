@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace DiplomaProject.Services.ApiServices;
 
-public class CaseService : ICaseService, IDisposable
+public class CaseService : IDisposable
 {
     private readonly RestClientExtended _restClient;
 

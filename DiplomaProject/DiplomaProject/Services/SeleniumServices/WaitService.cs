@@ -10,12 +10,12 @@ namespace DiplomaProject.Services.SeleniumServices
         private readonly WebDriverWait _explicitWait;
         private readonly DefaultWait<IWebDriver> _fluentWait;
 
-        public WaitService(IWebDriver driver)
+        public WaitService()
         {
             _explicitWait =
-                new WebDriverWait(driver, TimeSpan.FromSeconds(Configurator.AppSettings.SeleniumWaitTimeout));
+                new WebDriverWait(DriverFactory.Driver, TimeSpan.FromSeconds(Configurator.AppSettings.SeleniumWaitTimeout));
 
-            _fluentWait = new DefaultWait<IWebDriver>(driver)
+            _fluentWait = new DefaultWait<IWebDriver>(DriverFactory.Driver)
             {
                 Timeout = TimeSpan.FromSeconds(Configurator.AppSettings.SeleniumWaitTimeout),
                 PollingInterval = TimeSpan.FromMilliseconds(250)

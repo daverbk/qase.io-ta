@@ -16,18 +16,6 @@ namespace DiplomaProject.Tests.UI;
 [Category("Authorization-UI")]
 public class AuthorizationTests : BaseUiTest
 {
-    private WelcomingPage _welcomingPage = null!;
-    private AuthorizationPage _authorizationPage = null!;
-    private ProjectsPage _projectsPage = null!;
-
-    [SetUp]
-    public void InstantiateRequiredPages()
-    {
-        _welcomingPage = new WelcomingPage(Driver);
-        _authorizationPage = new AuthorizationPage(Driver);
-        _projectsPage = new ProjectsPage(Driver);
-    }
-
     [Test]
     [Category("Positive")]
     [AllureSuite("Authorization-UI")]
@@ -35,12 +23,14 @@ public class AuthorizationTests : BaseUiTest
     [AllureTms("tms", "suite=9&previewMode=modal&case=20")]
     public void Authorization_PopulatedValidData_ProjectsPageOpened()
     {
-        _welcomingPage
+        new WelcomingPage().Load();
+
+        WelcomingPage
             .ProceedToLoggingIn()
             .PopulateAuthorizationData(Configurator.Admin.Email, Configurator.Admin.Password)
             .SubmitAuthorizationForm();
 
-        _projectsPage.PageOpened.Should().BeTrue();
+        new ProjectsPage().IsOpened.Should().BeTrue();
     }
 
     [Test]
@@ -53,15 +43,17 @@ public class AuthorizationTests : BaseUiTest
         const string invalidEmail = "1111@sma.b";
         const string invalidPassword = "11111";
 
-        _welcomingPage
+        new WelcomingPage().Load();
+        
+        WelcomingPage
             .ProceedToLoggingIn()
             .PopulateAuthorizationData(invalidEmail, invalidPassword)
             .SubmitAuthorizationForm();
 
         using (new AssertionScope())
         {
-            _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
-            _authorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");
+            AuthorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+            AuthorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");
         }
     }
 
@@ -74,15 +66,17 @@ public class AuthorizationTests : BaseUiTest
     [AllureTms("tms", "suite=9&previewMode=modal&case=22")]
     public void Authorization_InsertedSqlInjection_ErrorMessageDisplayed(string sqlInjections)
     {
-        _welcomingPage
+        new WelcomingPage().Load();
+        
+        WelcomingPage
             .ProceedToLoggingIn()
             .PopulateAuthorizationData(Configurator.Admin.Email, sqlInjections)
             .SubmitAuthorizationForm();
 
         using (new AssertionScope())
         {
-            _authorizationPage.ErrorMessageDisplayed().Should().BeTrue();
-            _authorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");  
+            AuthorizationPage.ErrorMessageDisplayed().Should().BeTrue();
+            AuthorizationPage.ErrorMessageText().Should().Be("These credentials do not match our records.");  
         }
     }
 }
