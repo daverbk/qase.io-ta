@@ -14,9 +14,9 @@ namespace DiplomaProject.Wrappers
 
         private ReadOnlyCollection<IWebElement> Cells(IWebElement row) => row.FindElements(By.TagName("td"));
 
-        public Table(IWebDriver driver, By @by)
+        public Table(By by)
         {
-            _baseElementWrapper = new BaseElementWrapper(driver, by);
+            _baseElementWrapper = new BaseElementWrapper(by);
         }
 
         public bool ProjectExists(string projectTitle)

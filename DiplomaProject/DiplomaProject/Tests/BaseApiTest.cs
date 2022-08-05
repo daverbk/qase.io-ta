@@ -7,6 +7,8 @@ namespace DiplomaProject.Tests;
 
 public class BaseApiTest
 {
+    private RestClientExtended _client = null!;
+    
     protected ProjectService ProjectService { get; private set; } = null!;
 
     protected CaseService CaseService { get; private set; } = null!;
@@ -16,10 +18,16 @@ public class BaseApiTest
     [OneTimeSetUp]
     public void SetUpClient()
     {
-        var adminClient = new RestClientExtended(UserType.Admin);
+        _client = new RestClientExtended(UserType.Admin);
 
-        ProjectService = new ProjectService(adminClient);
-        CaseService = new CaseService(adminClient);
-        DefectService = new DefectService(adminClient);
+        ProjectService = new ProjectService(_client);
+        CaseService = new CaseService(_client);
+        DefectService = new DefectService(_client);
+    }
+
+    [OneTimeTearDown]
+    public void DisposeClient()
+    {
+        _client.Dispose();
     }
 }

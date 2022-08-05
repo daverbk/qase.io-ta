@@ -1,28 +1,19 @@
-using System;
-using DiplomaProject.Configuration;
 using DiplomaProject.Services.SeleniumServices;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace DiplomaProject.Tests;
 
 public class BaseUiTest
 {
-    [field: ThreadStatic] 
-    protected static IWebDriver Driver { get; private set; } = null!;
-
-    [SetUp]
-    public void OpenBrowserAtWelcomingPage()
+    [OneTimeSetUp]
+    public void InitializeTests()
     {
         DriverFactory.InitBrowser();
-        Driver = DriverFactory.Driver;
-
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
     }
-
-    [TearDown]
+    
+    [OneTimeTearDown]
     public void QuitBrowser()
     {
-        Driver.Quit();
+        DriverFactory.Driver.Quit();
     }
 }

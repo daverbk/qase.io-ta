@@ -1,3 +1,5 @@
+using DiplomaProject.Configuration;
+using DiplomaProject.Services.SeleniumServices;
 using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
@@ -7,22 +9,23 @@ public class WelcomingPage : BasePage
 {
     private static readonly By LoginButtonLocator = By.Id("signin");
 
-    private IWebElement LoginButton => WaitService.WaitUntilElementExists(LoginButtonLocator);
+    private static IWebElement LoginButton => new WaitService().WaitUntilElementExists(LoginButtonLocator);
 
-    public WelcomingPage(IWebDriver driver) : base(driver)
+    protected override void ExecuteLoad()
     {
+        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
+    }
+
+    protected override bool EvaluateLoadedStatus()
+    {
+        return new WaitService().WaitUntilElementExists(LoginButtonLocator).Displayed;
     }
 
     [AllureStep("Click \"Login\" button")]
-    public AuthorizationPage ProceedToLoggingIn()
+    public static AuthorizationPage ProceedToLoggingIn()
     {
         LoginButton.Click();
 
-        return new AuthorizationPage(Driver);
-    }
-
-    protected override By GetPageIdentifier()
-    {
-        return LoginButtonLocator;
+        return new AuthorizationPage();
     }
 }

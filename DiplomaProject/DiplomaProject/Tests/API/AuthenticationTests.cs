@@ -33,6 +33,13 @@ public class AuthenticationApiTests : BaseApiTest
         _projectServiceUnauthorizedUser = new ProjectService(unauthorizedClient);
     }
 
+    [OneTimeTearDown]
+    public void DisposeInvalidClients()
+    {
+        _projectServiceUserWithInvalidToken.Dispose();
+        _projectServiceUnauthorizedUser.Dispose();
+    }
+
     [Test]
     [Category("Positive")]
     [AllureName("Authentication using valid data")]

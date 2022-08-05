@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace DiplomaProject.Services.ApiServices;
 
-public class DefectService : IDefectService, IDisposable
+public class DefectService : IDisposable
 {
     private readonly RestClientExtended _restClient;
 

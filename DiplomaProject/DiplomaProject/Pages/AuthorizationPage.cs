@@ -1,3 +1,5 @@
+using DiplomaProject.Configuration;
+using DiplomaProject.Services.SeleniumServices;
 using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
 
@@ -10,18 +12,24 @@ public class AuthorizationPage : BasePage
     private static readonly By LoginButtonLocator = By.Id("btnLogin");
     private static readonly By AuthorizationErrorMessageLocator = By.ClassName("form-control-feedback");
 
-    private IWebElement EmailField => WaitService.WaitUntilElementExists(EmailFieldLocator);
+    private static IWebElement EmailField => new WaitService().WaitUntilElementExists(EmailFieldLocator);
 
-    private IWebElement PasswordField => WaitService.WaitUntilElementExists(PasswordFieldLocator);
+    private static IWebElement PasswordField => new WaitService().WaitUntilElementExists(PasswordFieldLocator);
 
-    private IWebElement LoginButton => WaitService.WaitUntilElementExists(LoginButtonLocator);
+    private static IWebElement LoginButton => new WaitService().WaitUntilElementExists(LoginButtonLocator);
 
-    private IWebElement AuthorizationErrorMessage => WaitService.WaitUntilElementExists(AuthorizationErrorMessageLocator);
+    private static IWebElement AuthorizationErrorMessage => new WaitService().WaitUntilElementExists(AuthorizationErrorMessageLocator);
 
-    public AuthorizationPage(IWebDriver driver) : base(driver)
+    protected override void ExecuteLoad()
     {
+        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/login");
     }
-    
+
+    protected override bool EvaluateLoadedStatus()
+    {
+        return new WaitService().WaitUntilElementExists(LoginButtonLocator).Displayed;
+    }
+
     [AllureStep("Populate authorization data with: login {0} password {1}")]
     public AuthorizationPage PopulateAuthorizationData(string login, string password)
     {
@@ -37,18 +45,13 @@ public class AuthorizationPage : BasePage
         LoginButton.Click();
     }
     
-    public bool ErrorMessageDisplayed()
+    public static bool ErrorMessageDisplayed()
     {
         return AuthorizationErrorMessage.Displayed;
     }
     
-    public string ErrorMessageText()
+    public static string ErrorMessageText()
     {
         return AuthorizationErrorMessage.Text.Normalize();
-    }
-
-    protected override By GetPageIdentifier()
-    {
-        return LoginButtonLocator;
     }
 }

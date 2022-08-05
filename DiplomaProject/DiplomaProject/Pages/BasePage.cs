@@ -1,24 +1,10 @@
-using System;
 using DiplomaProject.Services.SeleniumServices;
-using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace DiplomaProject.Pages
 {
-    public abstract class BasePage
+    public abstract class BasePage : LoadableComponent<BasePage>
     {
-        [field: ThreadStatic] 
-        protected static IWebDriver Driver { get; private set; } = null!;
-
-        protected static WaitService WaitService { get; private set; } = null!;
-
-        public bool PageOpened => WaitService.WaitUntilElementExists(GetPageIdentifier()).Displayed;
-
-        protected BasePage(IWebDriver driver)
-        {
-            Driver = driver;
-            WaitService = new WaitService(Driver);
-        }
-
-        protected abstract By GetPageIdentifier();
+        public bool IsOpened => IsLoaded;
     }
 }

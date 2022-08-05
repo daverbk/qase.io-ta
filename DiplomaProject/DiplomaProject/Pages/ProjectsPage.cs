@@ -1,3 +1,5 @@
+using DiplomaProject.Configuration;
+using DiplomaProject.Services.SeleniumServices;
 using DiplomaProject.Wrappers;
 using NUnit.Allure.Attributes;
 using OpenQA.Selenium;
@@ -9,12 +11,18 @@ public class ProjectsPage : BasePage
     private static readonly By CreateProjectButtonLocator = By.Id("createButton");
     private static readonly By ProjectsTableLocator = By.TagName("table");
 
-    private IWebElement CreateProjectButton => WaitService.WaitUntilElementExists(CreateProjectButtonLocator);
+    private static IWebElement CreateProjectButton => new WaitService().WaitUntilElementExists(CreateProjectButtonLocator);
 
-    private static Table ProjectsTable => new(Driver, ProjectsTableLocator);
-
-    public ProjectsPage(IWebDriver driver) : base(driver)
+    private static Table ProjectsTable => new(ProjectsTableLocator);
+    
+    protected override void ExecuteLoad()
     {
+        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/projects");
+    }
+
+    protected override bool EvaluateLoadedStatus()
+    {
+        return new WaitService().WaitUntilElementExists(CreateProjectButtonLocator).Displayed;
     }
 
     [AllureStep("Click \"Create new project\" button")]
@@ -22,10 +30,10 @@ public class ProjectsPage : BasePage
     {
         CreateProjectButton.Click();
 
-        return new CreateProjectPage(Driver);
+        return new CreateProjectPage();
     }
 
-    public bool ProjectExistsInTable(string projectName)
+    public static bool ProjectExistsInTable(string projectName)
     {
         if (ProjectsTableExists() == false)
         {
@@ -35,15 +43,10 @@ public class ProjectsPage : BasePage
         return ProjectsTable.ProjectExists(projectName);
     }
 
-    private bool ProjectsTableExists()
+    private static bool ProjectsTableExists()
     {
-        var tableFoundIndicator = Driver.FindElements(By.TagName("table"));
+        var tableFoundIndicator = DriverFactory.Driver.FindElements(By.TagName("table"));
         
         return tableFoundIndicator.Count != 0;
-    }
-
-    protected override By GetPageIdentifier()
-    {
-        return CreateProjectButtonLocator;
     }
 }
