@@ -1,3 +1,4 @@
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -8,7 +9,7 @@ namespace DiplomaProject.Services.SeleniumServices
 {
     public class DriverSetUp
     {
-        public static IWebDriver GetChromeDriver()
+        public static ThreadLocal<IWebDriver> GetChromeDriver()
         {
             var chromeOptions = new ChromeOptions();
             
@@ -19,10 +20,10 @@ namespace DiplomaProject.Services.SeleniumServices
             chromeOptions.SetLoggingPreference(LogType.Driver, LogLevel.All);
 
             new DriverManager().SetUpDriver(new ChromeConfig());
-            return new ChromeDriver(chromeOptions);
+            return new ThreadLocal<IWebDriver>(() => new ChromeDriver(chromeOptions));
         }
 
-        public static IWebDriver GetFirefoxDriver()
+        public static ThreadLocal<IWebDriver> GetFirefoxDriver()
         {
             var mimeTypes =
                 "image/png,image/gif,image/jpeg,image/pjpeg,application/pdf,text/csv,application/vnd.ms-excel," +
@@ -41,7 +42,7 @@ namespace DiplomaProject.Services.SeleniumServices
             ffOptions.SetLoggingPreference(LogType.Driver, LogLevel.All);
 
             new DriverManager().SetUpDriver(new FirefoxConfig());
-            return new FirefoxDriver(ffOptions);
+            return new ThreadLocal<IWebDriver>(() => new FirefoxDriver(ffOptions));
         }
     }
 }

@@ -13,7 +13,7 @@ public class WelcomingPage : BasePage
 
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl);
     }
 
     protected override bool EvaluateLoadedStatus()

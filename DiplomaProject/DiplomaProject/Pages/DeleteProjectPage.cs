@@ -16,7 +16,7 @@ public class DeleteProjectPage : BasePage
     
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}/delete");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}/delete");
     }
 
     protected override bool EvaluateLoadedStatus()

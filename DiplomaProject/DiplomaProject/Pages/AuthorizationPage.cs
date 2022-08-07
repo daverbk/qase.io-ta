@@ -22,7 +22,7 @@ public class AuthorizationPage : BasePage
 
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/login");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/login");
     }
 
     protected override bool EvaluateLoadedStatus()

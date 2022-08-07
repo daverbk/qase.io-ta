@@ -19,7 +19,7 @@ public class ProjectPage : BasePage
 
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}?view=1&suite=15");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}?view=1&suite=15");
     }
 
     protected override bool EvaluateLoadedStatus()

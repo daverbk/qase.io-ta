@@ -17,7 +17,7 @@ public class ProjectsPage : BasePage
     
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/projects");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/projects");
     }
 
     protected override bool EvaluateLoadedStatus()
@@ -45,7 +45,7 @@ public class ProjectsPage : BasePage
 
     private static bool ProjectsTableExists()
     {
-        var tableFoundIndicator = DriverFactory.Driver.FindElements(By.TagName("table"));
+        var tableFoundIndicator = DriverFactory.Driver.Value!.FindElements(By.TagName("table"));
         
         return tableFoundIndicator.Count != 0;
     }
