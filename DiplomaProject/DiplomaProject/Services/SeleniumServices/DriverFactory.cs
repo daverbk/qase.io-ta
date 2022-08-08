@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using DiplomaProject.Configuration;
-using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace DiplomaProject.Services.SeleniumServices
