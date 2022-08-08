@@ -14,6 +14,6 @@ public class BaseUiTest
     [OneTimeTearDown]
     public void QuitBrowser()
     {
-        DriverFactory.Driver.Quit();
+        DriverFactory.Driver.Value!.Quit();
     }
 }

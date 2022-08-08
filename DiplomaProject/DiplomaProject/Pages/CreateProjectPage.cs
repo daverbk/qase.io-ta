@@ -20,7 +20,7 @@ public class CreateProjectPage : BasePage
 
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/project/create");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/project/create");
     }
 
     protected override bool EvaluateLoadedStatus()

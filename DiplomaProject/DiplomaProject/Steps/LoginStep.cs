@@ -10,7 +10,7 @@ public class LoginStep
     [AllureStep("Log in with {0} and {1}")]
     public ProjectsPage LogIn(string email, string password)
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/login");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + "/login");
 
         new AuthorizationPage()
             .PopulateAuthorizationData(email, password)

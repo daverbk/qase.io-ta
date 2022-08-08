@@ -29,7 +29,7 @@ public class ProjectSettingsPage : BasePage
 
     protected override void ExecuteLoad()
     {
-        DriverFactory.Driver.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}/settings/general");
+        DriverFactory.Driver.Value!.Navigate().GoToUrl(Configurator.AppSettings.BaseUiUrl + $"/project/{ProjectName}/settings/general");
     }
 
     protected override bool EvaluateLoadedStatus()
