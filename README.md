@@ -1,6 +1,10 @@
-# AQA Diploma Project
+# Test automation project
 
 ![image](https://user-images.githubusercontent.com/98875282/170436759-51bddf41-feac-4bcb-9585-7947e4cc7386.png)
+
+<p align="center">
+    <img src="qase-logo.png" a alt="Inline specification" width="35%"/>
+</p>
 
 ## Application
 
@@ -52,3 +56,5 @@
 
 * branches: *feature/case—id-new-awesome-feature*
 * commits: *CASE-ID: Title starting with a capital letter*
+
+## _[Here](diplomaPresentation.pdf) you can have a look at the presentation prepared for the project_
